@@ -6,5 +6,6 @@ services:
             - "80:80"
         volumes:
             - .:/code
+            - ~/.cache/composer:/.composer/cache
         env_file:
             - .env
