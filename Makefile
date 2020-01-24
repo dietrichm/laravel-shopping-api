@@ -1,11 +1,13 @@
 .PHONY: build up logs down
 
+user := $(shell id -u):$(shell id -g)
+
 default: up
 
 build: .env
 	docker-compose build
 
-up: .env
+up: .env vendor
 	docker-compose up -d
 
 logs:
@@ -16,3 +18,6 @@ down:
 
 .env:
 	cp .env.example .env
+
+vendor: composer.json composer.lock
+	docker-compose run --rm --user $(user) php composer install
