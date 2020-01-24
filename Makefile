@@ -1,4 +1,4 @@
-.PHONY: build up logs down
+.PHONY: build up logs down composer
 
 user := $(shell id -u):$(shell id -g)
 
@@ -21,3 +21,6 @@ down:
 
 vendor: composer.json composer.lock
 	docker-compose run --rm --user $(user) php composer install
+
+composer:
+	docker-compose run --rm --user $(user) php composer $(filter-out $@,$(MAKECMDGOALS))
