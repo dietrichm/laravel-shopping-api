@@ -24,3 +24,6 @@ vendor: composer.json composer.lock
 
 composer:
 	docker-compose run --rm --user $(user) php composer $(filter-out $@,$(MAKECMDGOALS))
+
+%:
+	@:
