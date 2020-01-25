@@ -1,0 +1,18 @@
+<?php
+
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
+$finder = Finder::create()
+    ->in(__DIR__)
+    ->exclude([
+        'cache',
+        'storage',
+        'vendor',
+    ]);
+
+return Config::create()
+    ->setRules([
+        '@PSR2' => true,
+    ])
+    ->setFinder($finder);
