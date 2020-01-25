@@ -10,4 +10,4 @@ jobs:
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
     - name: Lint PHP files using PHP-CS-Fixer
-      run: vendor/bin/php-cs-fixer fix --verbose --dry-run --diff
+      run: vendor/bin/php-cs-fixer fix --verbose --dry-run --diff --using-cache=no
