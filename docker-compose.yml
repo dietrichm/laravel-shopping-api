@@ -11,6 +11,20 @@ services:
       - .env
     networks:
       - app-network
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: laravel
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  mysql-volume:
 
 networks:
   app-network:
