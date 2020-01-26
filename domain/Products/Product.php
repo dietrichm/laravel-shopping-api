@@ -10,4 +10,9 @@ final class Product extends Model
     {
         $this->uuid = $productId->toString();
     }
+
+    public function setName(ProductName $productName): void
+    {
+        $this->name = $productName->toString();
+    }
 }
