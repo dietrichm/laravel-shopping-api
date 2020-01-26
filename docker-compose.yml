@@ -1,11 +1,11 @@
 version: '3'
 services:
-    php:
-        build: .
-        ports:
-            - "80:80"
-        volumes:
-            - .:/code
-            - ~/.cache/composer:/.composer/cache
-        env_file:
-            - .env
+  php:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - .:/code
+      - ~/.cache/composer:/.composer/cache
+    env_file:
+      - .env
