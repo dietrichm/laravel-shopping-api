@@ -9,3 +9,8 @@ services:
       - ~/.cache/composer:/.composer/cache
     env_file:
       - .env
+    networks:
+      - app-network
+
+networks:
+  app-network:
