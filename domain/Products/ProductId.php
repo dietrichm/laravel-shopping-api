@@ -16,6 +16,11 @@ final class ProductId
         $this->uuid = $uuid;
     }
 
+    public static function fromString(string $value): self
+    {
+        return new self(Uuid::fromString($value));
+    }
+
     public static function generate(): self
     {
         return new self(Uuid::uuid4());
