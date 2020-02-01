@@ -9,3 +9,7 @@
    This will populate the changes in the environment variables.
 1. Add `0.0.0.0 shopping.test` to your `/etc/hosts` file.
 1. Access the application at [shopping.test](http://shopping.test).
+
+## Running tests
+
+The test suite can be run with `make tests`.
