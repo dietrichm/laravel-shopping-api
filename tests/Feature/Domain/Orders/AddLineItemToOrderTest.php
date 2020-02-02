@@ -6,6 +6,7 @@ use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\LineItem;
 use Domain\Orders\LineItemId;
 use Domain\Orders\Order;
+use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Products\ProductId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -41,5 +42,23 @@ final class AddLineItemToOrderTest extends TestCase
             [$expectedLineItem],
             $order->getLineItems()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function itDoesNotAddLineItemToNewOrder(): void
+    {
+        $lineItemId = LineItemId::generate();
+        $orderId = OrderId::generate();
+        $productId = ProductId::generate();
+
+        $this->expectException(OrderDoesNotExist::class);
+
+        (new AddLineItemToOrder(
+            $lineItemId,
+            $orderId,
+            $productId
+        ))->handle();
     }
 }
