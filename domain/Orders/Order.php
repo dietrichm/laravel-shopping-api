@@ -16,6 +16,11 @@ final class Order extends AggregateRoot
      */
     private $new = true;
 
+    /**
+     * @var LineItem[]
+     */
+    private $lineItems = [];
+
     public static function findOrCreate(OrderId $orderId): self
     {
         /** @var Order $order */
@@ -36,8 +41,27 @@ final class Order extends AggregateRoot
         return $this->new;
     }
 
+    /**
+     * @return LineItem[]
+     */
+    public function getLineItems(): array
+    {
+        return $this->lineItems;
+    }
+
     protected function applyOrderWasCreated(): void
     {
         $this->new = false;
+    }
+
+    protected function applyLineItemWasAddedToOrder(
+        LineItemWasAddedToOrder $event
+    ): void {
+        $lineItem = new LineItem(
+            $event->getLineItemId(),
+            $event->getProductId()
+        );
+
+        $this->lineItems[] = $lineItem;
     }
 }
