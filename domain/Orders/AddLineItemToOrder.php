@@ -51,7 +51,13 @@ final class AddLineItemToOrder
 
     public function handle()
     {
-        Order::findOrCreate($this->orderId)
+        $order = Order::findOrCreate($this->orderId);
+
+        if ($order->isNew()) {
+            throw OrderDoesNotExist::withId($this->orderId);
+        }
+
+        $order
             ->recordThat(new LineItemWasAddedToOrder(
                 $this->lineItemId,
                 $this->orderId,
