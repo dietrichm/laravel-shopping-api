@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\JsonEventSerializer;
+
 return [
 
     /*
@@ -74,7 +76,7 @@ return [
      * and stored as json. You can customize the class name. A valid serializer
      * should implement Spatie\EventSourcing\EventSerializers\Serializer.
      */
-    'event_serializer' => \Spatie\EventSourcing\EventSerializers\JsonEventSerializer::class,
+    'event_serializer' => JsonEventSerializer::class,
 
     /*
      * When replaying events, potentially a lot of events will have to be retrieved.
