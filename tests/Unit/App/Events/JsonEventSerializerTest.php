@@ -4,6 +4,8 @@ namespace Tests\Unit\App\Events;
 
 use App\Events\JsonEventSerializer;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use Spatie\EventSourcing\ShouldBeStored;
 
 final class JsonEventSerializerTest extends TestCase
 {
@@ -54,5 +56,18 @@ final class JsonEventSerializerTest extends TestCase
             $expectedEvent,
             $event
         );
+    }
+
+    /**
+     * @test
+     */
+    public function itCannotSerializeNonStoredEvents(): void
+    {
+        $event = new class implements ShouldBeStored {
+        };
+
+        $this->expectException(RuntimeException::class);
+
+        $this->serializer->serialize($event);
     }
 }
