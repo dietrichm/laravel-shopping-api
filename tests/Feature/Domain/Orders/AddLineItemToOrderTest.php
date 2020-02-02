@@ -9,6 +9,7 @@ use Domain\Orders\Order;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Orders\OrderWasCreated;
+use Domain\Products\ProductDoesNotExist;
 use Domain\Products\ProductId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -57,6 +58,26 @@ final class AddLineItemToOrderTest extends TestCase
         $productId = ProductId::generate();
 
         $this->expectException(OrderDoesNotExist::class);
+
+        (new AddLineItemToOrder(
+            $lineItemId,
+            $orderId,
+            $productId
+        ))->handle();
+    }
+
+    /**
+     * @test
+     */
+    public function itDoesNotAddLineItemWithNonExistingProduct(): void
+    {
+        $lineItemId = LineItemId::generate();
+        $orderId = OrderId::generate();
+        $productId = ProductId::generate();
+
+        $this->givenOrderExists($orderId);
+
+        $this->expectException(ProductDoesNotExist::class);
 
         (new AddLineItemToOrder(
             $lineItemId,
