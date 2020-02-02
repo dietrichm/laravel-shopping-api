@@ -18,6 +18,7 @@ final class CreateController extends Controller
         CreateOrder::dispatchNow($orderId);
 
         return OrderIdResource::make($orderId)
-            ->toResponse($request);
+            ->toResponse($request)
+            ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature\App\Http\Controllers\Orders;
 
 use Domain\Orders\CreateOrder;
 use Domain\Orders\OrderId;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 
@@ -30,6 +31,7 @@ final class CreateControllerTest extends TestCase
             }
         );
 
+        $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonPath('data.id', $orderId->toString());
     }
 }
