@@ -2,16 +2,23 @@
 
 namespace Domain\Orders;
 
-final class Order
+use Spatie\EventSourcing\AggregateRoot;
+
+final class Order extends AggregateRoot
 {
     /**
      * @var OrderId
      */
     private $orderId;
 
-    public function __construct(OrderId $orderId)
+    public static function findOrCreate(OrderId $orderId): self
     {
-        $this->orderId = $orderId;
+        /** @var Order $order */
+        $order = parent::retrieve($orderId->toString());
+
+        $order->orderId = $orderId;
+
+        return $order;
     }
 
     public function getId(): OrderId
