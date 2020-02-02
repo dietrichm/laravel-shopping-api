@@ -2,9 +2,10 @@
 
 namespace Domain\Orders;
 
+use App\Events\StoredEvent;
 use Domain\Products\ProductId;
 
-final class LineItemWasAddedToOrder
+final class LineItemWasAddedToOrder implements StoredEvent
 {
     /**
      * @var LineItemId
@@ -44,5 +45,23 @@ final class LineItemWasAddedToOrder
     public function getProductId(): ProductId
     {
         return $this->productId;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'lineItemId' => $this->lineItemId->toString(),
+            'orderId' => $this->orderId->toString(),
+            'productId' => $this->productId->toString(),
+        ];
+    }
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            LineItemId::fromString($data['lineItemId']),
+            OrderId::fromString($data['orderId']),
+            ProductId::fromString($data['productId']),
+        );
     }
 }
