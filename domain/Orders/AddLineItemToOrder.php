@@ -3,9 +3,12 @@
 namespace Domain\Orders;
 
 use Domain\Products\ProductId;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 final class AddLineItemToOrder
 {
+    use Dispatchable;
+
     /**
      * @var LineItemId
      */
@@ -44,5 +47,16 @@ final class AddLineItemToOrder
     public function getProductId(): ProductId
     {
         return $this->productId;
+    }
+
+    public function handle()
+    {
+        Order::findOrCreate($this->orderId)
+            ->recordThat(new LineItemWasAddedToOrder(
+                $this->lineItemId,
+                $this->orderId,
+                $this->productId
+            ))
+            ->persist();
     }
 }
