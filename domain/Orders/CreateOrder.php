@@ -2,8 +2,12 @@
 
 namespace Domain\Orders;
 
+use Illuminate\Foundation\Bus\Dispatchable;
+
 final class CreateOrder
 {
+    use Dispatchable;
+
     /**
      * @var OrderId
      */
@@ -17,5 +21,14 @@ final class CreateOrder
     public function getOrderId(): OrderId
     {
         return $this->orderId;
+    }
+
+    public function handle()
+    {
+        Order::findOrCreate($this->orderId)
+            ->recordThat(
+                new OrderWasCreated($this->orderId)
+            )
+            ->persist();
     }
 }
