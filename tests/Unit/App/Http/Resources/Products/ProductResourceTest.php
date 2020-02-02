@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Http\Resources\Products;
+namespace Tests\Unit\App\Http\Resources\Products;
 
 use App\Http\Resources\Products\ProductResource;
 use Domain\Products\Product;
