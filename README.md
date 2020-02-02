@@ -14,3 +14,15 @@
 ## Running tests
 
 The test suite can be run with `make tests`.
+
+## Working with the API
+
+There are several API endpoints available, which can easily be accessed using an API client such as [Postman](https://www.getpostman.com/) or [Insomnia](https://insomnia.rest/).
+
+### `GET /api/products`
+
+This will return a list of products, including the ID, name and price.
+
+### `POST /api/orders`
+
+To create a new order, call this endpoint to retrieve a new order ID.
