@@ -2,6 +2,7 @@
 
 namespace Domain\Products;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 final class Product extends Model
@@ -34,5 +35,18 @@ final class Product extends Model
     public function setPrice(Money $price): void
     {
         $this->price = $price->getValue();
+    }
+
+    public function scopeId(Builder $query, ProductId $productId): self
+    {
+        $product = $query
+            ->where('uuid', $productId->toString())
+            ->first();
+
+        if (!$product instanceof self) {
+            throw ProductDoesNotExist::withId($productId);
+        }
+
+        return $product;
     }
 }
