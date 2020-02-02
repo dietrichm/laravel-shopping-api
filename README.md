@@ -10,7 +10,6 @@
 1. Create and seed the database tables using `make artisan -- migrate:fresh --seed`  
    This will import four demo products which have been provided in a JSON file.
 1. Add `0.0.0.0 shopping.test` to your `/etc/hosts` file.
-1. Access the application at [shopping.test](http://shopping.test).
 
 ## Running tests
 
