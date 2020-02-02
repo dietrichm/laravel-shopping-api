@@ -13,4 +13,11 @@ final class JsonEventSerializer implements EventSerializer
             $event->toArray()
         );
     }
+
+    public function deserialize(string $eventClass, string $json): ShouldBeStored
+    {
+        return $eventClass::fromArray(
+            json_decode($json, true)
+        );
+    }
 }

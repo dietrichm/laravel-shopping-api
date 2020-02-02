@@ -34,4 +34,25 @@ final class JsonEventSerializerTest extends TestCase
             $serialized
         );
     }
+
+    /**
+     * @test
+     */
+    public function itDeserializesEvents(): void
+    {
+        $expectedEvent = new DummyEvent(
+            'this',
+            864.23
+        );
+
+        $event = $this->serializer->deserialize(
+            DummyEvent::class,
+            '{"foo":"this","bar":864.23}'
+        );
+
+        $this->assertEquals(
+            $expectedEvent,
+            $event
+        );
+    }
 }
