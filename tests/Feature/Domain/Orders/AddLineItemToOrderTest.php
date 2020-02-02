@@ -8,6 +8,7 @@ use Domain\Orders\LineItemId;
 use Domain\Orders\Order;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderWasCreated;
 use Domain\Products\ProductId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -24,6 +25,8 @@ final class AddLineItemToOrderTest extends TestCase
         $lineItemId = LineItemId::generate();
         $orderId = OrderId::generate();
         $productId = ProductId::generate();
+
+        $this->givenOrderExists($orderId);
 
         (new AddLineItemToOrder(
             $lineItemId,
@@ -60,5 +63,14 @@ final class AddLineItemToOrderTest extends TestCase
             $orderId,
             $productId
         ))->handle();
+    }
+
+    private function givenOrderExists(OrderId $orderId)
+    {
+        Order::findOrCreate($orderId)
+            ->recordThat(
+                new OrderWasCreated($orderId)
+            )
+            ->persist();
     }
 }
