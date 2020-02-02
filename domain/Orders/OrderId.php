@@ -21,6 +21,11 @@ final class OrderId
         return new self(Uuid::fromString($value));
     }
 
+    public static function generate(): self
+    {
+        return new self(Uuid::uuid4());
+    }
+
     public function toString(): string
     {
         return $this->uuid->toString();
