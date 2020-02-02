@@ -2,6 +2,7 @@
 
 namespace Domain\Orders;
 
+use Domain\Products\Product;
 use Domain\Products\ProductId;
 use Illuminate\Foundation\Bus\Dispatchable;
 
@@ -56,6 +57,8 @@ final class AddLineItemToOrder
         if ($order->isNew()) {
             throw OrderDoesNotExist::withId($this->orderId);
         }
+
+        Product::id($this->productId);
 
         $order
             ->recordThat(new LineItemWasAddedToOrder(
