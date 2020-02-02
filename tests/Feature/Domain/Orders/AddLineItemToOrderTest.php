@@ -9,6 +9,7 @@ use Domain\Orders\Order;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Orders\OrderWasCreated;
+use Domain\Products\Product;
 use Domain\Products\ProductDoesNotExist;
 use Domain\Products\ProductId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,9 +24,12 @@ final class AddLineItemToOrderTest extends TestCase
      */
     public function itAddsLineItemToOrder(): void
     {
+        /** @var Product $product */
+        $product = factory(Product::class)->create();
+
         $lineItemId = LineItemId::generate();
         $orderId = OrderId::generate();
-        $productId = ProductId::generate();
+        $productId = $product->getId();
 
         $this->givenOrderExists($orderId);
 
