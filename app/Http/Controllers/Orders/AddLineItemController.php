@@ -8,6 +8,7 @@ use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\LineItemId;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Products\ProductDoesNotExist;
 use Domain\Products\ProductId;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ final class AddLineItemController extends Controller
                 $orderId,
                 $productId
             );
-        } catch (OrderDoesNotExist $exception) {
+        } catch (OrderDoesNotExist | ProductDoesNotExist $exception) {
             return response()
                 ->json([$exception->getMessage()])
                 ->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
