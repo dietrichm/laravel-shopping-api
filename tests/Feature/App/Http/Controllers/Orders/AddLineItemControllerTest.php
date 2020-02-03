@@ -75,4 +75,25 @@ final class AddLineItemControllerTest extends TestCase
             'Invalid ProductId' => ['foo'],
         ];
     }
+
+    /**
+     * @test
+     */
+    public function itValidatesProvidedOrderId(): void
+    {
+        $productId = ProductId::generate();
+
+        Bus::fake();
+
+        $response = $this->postJson(
+            '/api/orders/foo/lineitems',
+            [
+                'productId' => $productId->toString(),
+            ]
+        );
+
+        Bus::assertNotDispatched(AddLineItemToOrder::class);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+    }
 }
