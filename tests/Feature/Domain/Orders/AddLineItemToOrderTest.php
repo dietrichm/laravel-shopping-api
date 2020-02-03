@@ -3,12 +3,12 @@
 namespace Tests\Feature\Domain\Orders;
 
 use Domain\Orders\AddLineItemToOrder;
+use Domain\Orders\CreateOrder;
 use Domain\Orders\LineItem;
 use Domain\Orders\LineItemId;
 use Domain\Orders\Order;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
-use Domain\Orders\OrderWasCreated;
 use Domain\Products\Product;
 use Domain\Products\ProductDoesNotExist;
 use Domain\Products\ProductId;
@@ -92,10 +92,6 @@ final class AddLineItemToOrderTest extends TestCase
 
     private function givenOrderExists(OrderId $orderId)
     {
-        Order::findOrCreate($orderId)
-            ->recordThat(
-                new OrderWasCreated($orderId)
-            )
-            ->persist();
+        CreateOrder::dispatchNow($orderId);
     }
 }
