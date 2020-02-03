@@ -5,6 +5,9 @@ namespace Domain\Products;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static Product id(ProductId $productId)
+ */
 final class Product extends Model
 {
     public function getId(): ProductId
