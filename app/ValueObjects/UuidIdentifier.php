@@ -30,4 +30,9 @@ abstract class UuidIdentifier
     {
         return $this->uuid->toString();
     }
+
+    public function equals(self $other): bool
+    {
+        return $this->uuid->equals($other->uuid);
+    }
 }
