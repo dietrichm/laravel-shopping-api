@@ -53,13 +53,13 @@ final class AddLineItemToOrder
     public function handle()
     {
         $order = Order::id($this->orderId);
-        Product::id($this->productId);
+        $product = Product::id($this->productId);
 
         $order
             ->recordThat(new LineItemWasAddedToOrder(
                 $this->lineItemId,
                 $order->getId(),
-                $this->productId
+                $product->getId()
             ))
             ->persist();
     }
