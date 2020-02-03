@@ -10,6 +10,7 @@ use Domain\Orders\OrderId;
 use Domain\Products\ProductId;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 final class AddLineItemController extends Controller
 {
@@ -17,6 +18,19 @@ final class AddLineItemController extends Controller
         Request $request,
         string $orderIdString
     ): JsonResponse {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'productId' => ['required', 'uuid'],
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()
+                ->json($validator->errors())
+                ->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+        }
+
         $lineItemId = LineItemId::generate();
         $orderId = OrderId::fromString($orderIdString);
         $productId = ProductId::fromString($request->input('productId'));
