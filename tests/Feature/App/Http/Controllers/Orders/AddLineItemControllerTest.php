@@ -6,6 +6,7 @@ use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\LineItemId;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Products\ProductDoesNotExist;
 use Domain\Products\ProductId;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Bus;
@@ -106,6 +107,29 @@ final class AddLineItemControllerTest extends TestCase
         $orderId = OrderId::generate();
         $productId = ProductId::generate();
         $exception = OrderDoesNotExist::withId($orderId);
+
+        Bus::shouldReceive('dispatchNow')
+            ->andThrow($exception);
+
+        $response = $this->postJson(
+            '/api/orders/' . $orderId->toString() . '/lineitems',
+            [
+                'productId' => $productId->toString(),
+            ]
+        );
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJson([$exception->getMessage()]);
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsWhenProductDoesNotExist(): void
+    {
+        $orderId = OrderId::generate();
+        $productId = ProductId::generate();
+        $exception = ProductDoesNotExist::withId($productId);
 
         Bus::shouldReceive('dispatchNow')
             ->andThrow($exception);
