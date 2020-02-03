@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Orders\LineItemIdResource;
 use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\LineItemId;
+use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Products\ProductId;
 use Illuminate\Http\JsonResponse;
@@ -39,11 +40,17 @@ final class AddLineItemController extends Controller
         $orderId = OrderId::fromString($orderIdString);
         $productId = ProductId::fromString($request->input('productId'));
 
-        AddLineItemToOrder::dispatchNow(
-            $lineItemId,
-            $orderId,
-            $productId
-        );
+        try {
+            AddLineItemToOrder::dispatchNow(
+                $lineItemId,
+                $orderId,
+                $productId
+            );
+        } catch (OrderDoesNotExist $exception) {
+            return response()
+                ->json([$exception->getMessage()])
+                ->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+        }
 
         return LineItemIdResource::make($lineItemId)
             ->toResponse($request)
