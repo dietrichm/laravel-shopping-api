@@ -31,6 +31,17 @@ final class Order extends AggregateRoot
         return $order;
     }
 
+    public static function id(OrderId $orderId): self
+    {
+        $order = self::findOrCreate($orderId);
+
+        if ($order->isNew()) {
+            throw OrderDoesNotExist::withId($orderId);
+        }
+
+        return $order;
+    }
+
     public function getId(): OrderId
     {
         return $this->orderId;
