@@ -55,6 +55,28 @@ final class LineItemCollectionTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function itCanReturnAllLineItems(): void
+    {
+        $lineItemOne = $this->givenThereIsALineItem();
+        $lineItemTwo = $this->givenThereIsALineItem();
+
+        $this->assertEmpty($this->collection->all());
+
+        $this->collection->add($lineItemOne);
+        $this->collection->add($lineItemTwo);
+
+        $this->assertEquals(
+            [
+                $lineItemOne,
+                $lineItemTwo,
+            ],
+            $this->collection->all()
+        );
+    }
+
     private function givenThereIsALineItem(): LineItem
     {
         return new LineItem(
