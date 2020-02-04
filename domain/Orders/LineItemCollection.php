@@ -24,9 +24,13 @@ final class LineItemCollection
         );
     }
 
-    public function remove(LineItemId $lineItemId): void
+    public function remove(LineItemId $lineItemId): LineItem
     {
+        $lineItem = $this->collection->offsetGet($lineItemId->toString());
+
         $this->collection->offsetUnset($lineItemId->toString());
+
+        return $lineItem;
     }
 
     public function has(LineItemId $lineItemId): bool
