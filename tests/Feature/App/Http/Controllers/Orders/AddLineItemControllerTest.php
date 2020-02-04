@@ -67,7 +67,8 @@ final class AddLineItemControllerTest extends TestCase
 
         Bus::assertNotDispatched(AddLineItemToOrder::class);
 
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonValidationErrors(['productId']);
     }
 
     public function providesInvalidProductIds(): array
@@ -96,7 +97,8 @@ final class AddLineItemControllerTest extends TestCase
 
         Bus::assertNotDispatched(AddLineItemToOrder::class);
 
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonValidationErrors(['orderId']);
     }
 
     /**
