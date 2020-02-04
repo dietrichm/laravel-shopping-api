@@ -84,4 +84,12 @@ final class Order extends AggregateRoot
             $lineItem
         );
     }
+
+    protected function applyLineItemWasRemovedFromOrder(
+        LineItemWasRemovedFromOrder $event
+    ): void {
+        $this->lineItems->offsetUnset(
+            $event->getLineItemId()->toString()
+        );
+    }
 }
