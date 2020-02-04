@@ -55,7 +55,7 @@ final class RemoveLineItemFromOrderTest extends TestCase
 
         $expectedLineItem = new LineItem(
             $lineItemIdTwo,
-            $productId
+            $product->fresh()
         );
 
         $this->assertEquals(

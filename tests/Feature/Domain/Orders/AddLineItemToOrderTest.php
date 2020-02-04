@@ -43,7 +43,7 @@ final class AddLineItemToOrderTest extends TestCase
 
         $expectedLineItem = new LineItem(
             $lineItemId,
-            $productId
+            $product->fresh()
         );
 
         $this->assertEquals(

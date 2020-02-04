@@ -5,8 +5,8 @@ namespace Tests\Unit\Domain\Orders;
 use Domain\Orders\LineItem;
 use Domain\Orders\LineItemCollection;
 use Domain\Orders\LineItemId;
-use Domain\Products\ProductId;
-use PHPUnit\Framework\TestCase;
+use Domain\Products\Product;
+use Tests\TestCase;
 
 final class LineItemCollectionTest extends TestCase
 {
@@ -17,6 +17,8 @@ final class LineItemCollectionTest extends TestCase
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->collection = new LineItemCollection();
     }
 
@@ -81,7 +83,7 @@ final class LineItemCollectionTest extends TestCase
     {
         return new LineItem(
             LineItemId::generate(),
-            ProductId::generate()
+            factory(Product::class)->make()
         );
     }
 }
