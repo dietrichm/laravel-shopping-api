@@ -38,4 +38,36 @@ final class RemoveLineItemControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
     }
+
+    /**
+     * @test
+     * @dataProvider providesInvalidLineItemIds
+     */
+    public function itValidatesProvidedLineItemId(
+        ?string $invalidLineItemId
+    ): void {
+        $orderId = OrderId::generate();
+
+        Bus::fake();
+
+        $response = $this->deleteJson(
+            '/api/orders/' . $orderId->toString() . '/lineitems',
+            [
+                'lineItemId' => $invalidLineItemId,
+            ]
+        );
+
+        Bus::assertNotDispatched(RemoveLineItemFromOrder::class);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonValidationErrors(['lineItemId']);
+    }
+
+    public function providesInvalidLineItemIds(): array
+    {
+        return [
+            'Missing LineItemId' => [null],
+            'Invalid LineItemId' => ['foo'],
+        ];
+    }
 }
