@@ -39,7 +39,7 @@ final class LineItemCollectionTest extends TestCase
     /**
      * @test
      */
-    public function itCanRemoveSpecifiedLineItem(): void
+    public function itCanReturnAndRemoveSpecifiedLineItem(): void
     {
         $lineItemOne = $this->givenThereIsALineItem();
         $lineItemTwo = $this->givenThereIsALineItem();
@@ -47,7 +47,9 @@ final class LineItemCollectionTest extends TestCase
         $this->collection->add($lineItemOne);
         $this->collection->add($lineItemTwo);
 
-        $this->collection->remove($lineItemOne->getId());
+        $returnedLineItem = $this->collection->remove($lineItemOne->getId());
+
+        $this->assertEquals($lineItemOne, $returnedLineItem);
 
         $this->assertFalse(
             $this->collection->has($lineItemOne->getId())
