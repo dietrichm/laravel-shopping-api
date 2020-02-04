@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Http\Controllers\Orders;
 
+use Domain\Orders\LineItemDoesNotExist;
 use Domain\Orders\LineItemId;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
@@ -102,6 +103,29 @@ final class RemoveLineItemControllerTest extends TestCase
         $orderId = OrderId::generate();
         $lineItemId = LineItemId::generate();
         $exception = OrderDoesNotExist::withId($orderId);
+
+        Bus::shouldReceive('dispatchNow')
+            ->andThrow($exception);
+
+        $response = $this->deleteJson(
+            '/api/orders/' . $orderId->toString() . '/lineitems',
+            [
+                'lineItemId' => $lineItemId->toString(),
+            ]
+        );
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJsonPath('message', $exception->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsWhenLineItemDoesNotExist(): void
+    {
+        $orderId = OrderId::generate();
+        $lineItemId = LineItemId::generate();
+        $exception = LineItemDoesNotExist::withId($lineItemId);
 
         Bus::shouldReceive('dispatchNow')
             ->andThrow($exception);

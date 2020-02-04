@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Orders;
 
 use App\Http\Controllers\Controller;
+use Domain\Orders\LineItemDoesNotExist;
 use Domain\Orders\LineItemId;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
@@ -37,7 +38,7 @@ final class RemoveLineItemController extends Controller
                 $lineItemId,
                 $orderId
             );
-        } catch (OrderDoesNotExist $exception) {
+        } catch (OrderDoesNotExist | LineItemDoesNotExist $exception) {
             throw new BadRequestHttpException($exception->getMessage());
         }
 
