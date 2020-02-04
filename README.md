@@ -19,6 +19,13 @@ The test suite can be run with `make tests`.
 
 There are several API endpoints available, which can easily be accessed using an API client such as [Postman](https://www.getpostman.com/) or [Insomnia](https://insomnia.rest/).
 
+All of the following endpoints are designed to take and eventually return JSON data. Hence, use the following request headers for every call:
+
+```
+Content-Type: application/json
+Accept: application/json
+```
+
 ### `GET /api/products`
 
 This will return a list of products, including the ID, name and price.
