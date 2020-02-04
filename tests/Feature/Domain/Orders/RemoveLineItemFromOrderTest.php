@@ -6,6 +6,7 @@ use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\CreateOrder;
 use Domain\Orders\LineItemId;
 use Domain\Orders\Order;
+use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Orders\RemoveLineItemFromOrder;
 use Domain\Products\Product;
@@ -44,6 +45,22 @@ final class RemoveLineItemFromOrderTest extends TestCase
         $order = Order::id($orderId);
 
         $this->assertEmpty($order->getLineItems());
+    }
+
+    /**
+     * @test
+     */
+    public function itDoesNotRemoveLineItemFromNewOrder(): void
+    {
+        $lineItemId = LineItemId::generate();
+        $orderId = OrderId::generate();
+
+        $this->expectException(OrderDoesNotExist::class);
+
+        (new RemoveLineItemFromOrder(
+            $lineItemId,
+            $orderId
+        ))->handle();
     }
 
     private function givenOrderExists(OrderId $orderId): void
