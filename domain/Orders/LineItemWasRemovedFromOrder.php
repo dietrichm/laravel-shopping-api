@@ -2,7 +2,9 @@
 
 namespace Domain\Orders;
 
-final class LineItemWasRemovedFromOrder
+use App\Events\StoredEvent;
+
+final class LineItemWasRemovedFromOrder implements StoredEvent
 {
     /**
      * @var LineItemId
@@ -30,5 +32,21 @@ final class LineItemWasRemovedFromOrder
     public function getOrderId(): OrderId
     {
         return $this->orderId;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'lineItemId' => $this->lineItemId->toString(),
+            'orderId' => $this->orderId->toString(),
+        ];
+    }
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            LineItemId::fromString($data['lineItemId']),
+            OrderId::fromString($data['orderId']),
+        );
     }
 }
