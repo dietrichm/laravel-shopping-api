@@ -17,8 +17,12 @@ final class RemoveLineItemController extends Controller
         string $orderIdString
     ): JsonResponse {
         Validator::make(
-            $request->all(),
+            array_merge(
+                ['orderId' => $orderIdString],
+                $request->all()
+            ),
             [
+                'orderId' => ['required', 'uuid'],
                 'lineItemId' => ['required', 'uuid'],
             ]
         )->validate();
