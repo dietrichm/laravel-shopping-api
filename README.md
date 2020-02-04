@@ -26,3 +26,15 @@ This will return a list of products, including the ID, name and price.
 ### `POST /api/orders`
 
 To create a new order, call this endpoint to retrieve a new order ID.
+
+### `POST /api/orders/[order-uuid]/lineitems`
+
+Once an order has been created, a line item can be added using this endpoint. Replace `[order-uuid]` in the path and use the following JSON payload:
+
+```json
+{
+    "productId": "f9b81b04-c4ac-4da5-80c6-4bf44c68caf4"
+}
+```
+
+Replace `productId` with a valid product ID retrieved from `/api/products`. The created line item ID will be returned.
