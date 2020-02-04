@@ -2,7 +2,6 @@
 
 namespace Domain\Orders;
 
-use Illuminate\Support\Collection;
 use Spatie\EventSourcing\AggregateRoot;
 
 final class Order extends AggregateRoot
@@ -18,13 +17,13 @@ final class Order extends AggregateRoot
     private $new = true;
 
     /**
-     * @var Collection
+     * @var LineItemCollection
      */
     private $lineItems;
 
     public function __construct()
     {
-        $this->lineItems = new Collection();
+        $this->lineItems = new LineItemCollection();
     }
 
     public static function findOrCreate(OrderId $orderId): self
@@ -63,12 +62,12 @@ final class Order extends AggregateRoot
      */
     public function getLineItems(): array
     {
-        return $this->lineItems->values()->all();
+        return $this->lineItems->all();
     }
 
     public function hasLineItem(LineItemId $lineItemId): bool
     {
-        return $this->lineItems->has($lineItemId->toString());
+        return $this->lineItems->has($lineItemId);
     }
 
     protected function applyOrderWasCreated(): void
@@ -84,17 +83,12 @@ final class Order extends AggregateRoot
             $event->getProductId()
         );
 
-        $this->lineItems->offsetSet(
-            $lineItem->getId()->toString(),
-            $lineItem
-        );
+        $this->lineItems->add($lineItem);
     }
 
     protected function applyLineItemWasRemovedFromOrder(
         LineItemWasRemovedFromOrder $event
     ): void {
-        $this->lineItems->offsetUnset(
-            $event->getLineItemId()->toString()
-        );
+        $this->lineItems->remove($event->getLineItemId());
     }
 }
