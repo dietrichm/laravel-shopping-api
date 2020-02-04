@@ -6,6 +6,7 @@ use Domain\Orders\LineItem;
 use Domain\Orders\LineItemCollection;
 use Domain\Orders\LineItemId;
 use Domain\Products\Product;
+use RuntimeException;
 use Tests\TestCase;
 
 final class LineItemCollectionTest extends TestCase
@@ -57,6 +58,16 @@ final class LineItemCollectionTest extends TestCase
         $this->assertTrue(
             $this->collection->has($lineItemTwo->getId())
         );
+    }
+
+    /**
+     * @test
+     */
+    public function itThrowsWhenRemovingUnknownLineItem(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->collection->remove(LineItemId::generate());
     }
 
     /**

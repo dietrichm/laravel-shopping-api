@@ -3,6 +3,7 @@
 namespace Domain\Orders;
 
 use Illuminate\Support\Collection;
+use RuntimeException;
 
 final class LineItemCollection
 {
@@ -26,6 +27,10 @@ final class LineItemCollection
 
     public function remove(LineItemId $lineItemId): LineItem
     {
+        if (!$this->collection->offsetExists($lineItemId->toString())) {
+            throw new RuntimeException('LineItemId is not present');
+        }
+
         $lineItem = $this->collection->offsetGet($lineItemId->toString());
 
         $this->collection->offsetUnset($lineItemId->toString());
