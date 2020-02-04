@@ -67,6 +67,44 @@ final class RemoveLineItemFromOrderTest extends TestCase
     /**
      * @test
      */
+    public function itStoresRemovedLineItemInRemovedCollection(): void
+    {
+        /** @var Product $product */
+        $product = factory(Product::class)->create();
+
+        $lineItemId = LineItemId::generate();
+        $orderId = OrderId::generate();
+        $productId = $product->getId();
+
+        $this->givenOrderExists($orderId);
+
+        $this->givenOrderHasLineItem(
+            $lineItemId,
+            $orderId,
+            $productId
+        );
+
+        (new RemoveLineItemFromOrder(
+            $lineItemId,
+            $orderId
+        ))->handle();
+
+        $order = Order::id($orderId);
+
+        $expectedLineItem = new LineItem(
+            $lineItemId,
+            $product->fresh()
+        );
+
+        $this->assertEquals(
+            [$expectedLineItem],
+            $order->getRemovedLineItems()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function itDoesNotRemoveLineItemFromNewOrder(): void
     {
         $lineItemId = LineItemId::generate();
