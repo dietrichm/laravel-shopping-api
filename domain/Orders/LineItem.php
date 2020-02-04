@@ -2,7 +2,7 @@
 
 namespace Domain\Orders;
 
-use Domain\Products\ProductId;
+use Domain\Products\Product;
 
 final class LineItem
 {
@@ -12,14 +12,14 @@ final class LineItem
     private $lineItemId;
 
     /**
-     * @var ProductId
+     * @var Product
      */
-    private $productId;
+    private $product;
 
-    public function __construct(LineItemId $lineItemId, ProductId $productId)
+    public function __construct(LineItemId $lineItemId, Product $product)
     {
         $this->lineItemId = $lineItemId;
-        $this->productId = $productId;
+        $this->product = $product;
     }
 
     public function getId(): LineItemId
@@ -27,8 +27,8 @@ final class LineItem
         return $this->lineItemId;
     }
 
-    public function getProductId(): ProductId
+    public function getProduct(): Product
     {
-        return $this->productId;
+        return $this->product;
     }
 }
