@@ -2,6 +2,7 @@
 
 namespace Domain\Orders;
 
+use Domain\Products\Product;
 use Spatie\EventSourcing\AggregateRoot;
 
 final class Order extends AggregateRoot
@@ -78,9 +79,11 @@ final class Order extends AggregateRoot
     protected function applyLineItemWasAddedToOrder(
         LineItemWasAddedToOrder $event
     ): void {
+        $product = Product::id($event->getProductId());
+
         $lineItem = new LineItem(
             $event->getLineItemId(),
-            $event->getProductId()
+            $product
         );
 
         $this->lineItems->add($lineItem);
