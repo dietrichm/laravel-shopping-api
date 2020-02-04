@@ -106,6 +106,7 @@ final class Order extends AggregateRoot
     protected function applyLineItemWasRemovedFromOrder(
         LineItemWasRemovedFromOrder $event
     ): void {
-        $this->lineItems->remove($event->getLineItemId());
+        $lineItem = $this->lineItems->remove($event->getLineItemId());
+        $this->removedLineItems->add($lineItem);
     }
 }
