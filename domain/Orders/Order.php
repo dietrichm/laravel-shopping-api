@@ -22,9 +22,15 @@ final class Order extends AggregateRoot
      */
     private $lineItems;
 
+    /**
+     * @var LineItemCollection
+     */
+    private $removedLineItems;
+
     public function __construct()
     {
         $this->lineItems = new LineItemCollection();
+        $this->removedLineItems = new LineItemCollection();
     }
 
     public static function findOrCreate(OrderId $orderId): self
@@ -69,6 +75,14 @@ final class Order extends AggregateRoot
     public function hasLineItem(LineItemId $lineItemId): bool
     {
         return $this->lineItems->has($lineItemId);
+    }
+
+    /**
+     * @return LineItem[]
+     */
+    public function getRemovedLineItems(): array
+    {
+        return $this->removedLineItems->all();
     }
 
     protected function applyOrderWasCreated(): void
