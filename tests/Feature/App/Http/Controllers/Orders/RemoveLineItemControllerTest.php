@@ -3,6 +3,7 @@
 namespace Tests\Feature\App\Http\Controllers\Orders;
 
 use Domain\Orders\LineItemId;
+use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Orders\RemoveLineItemFromOrder;
 use Illuminate\Http\Response;
@@ -91,5 +92,28 @@ final class RemoveLineItemControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonValidationErrors(['orderId']);
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsWhenOrderDoesNotExist(): void
+    {
+        $orderId = OrderId::generate();
+        $lineItemId = LineItemId::generate();
+        $exception = OrderDoesNotExist::withId($orderId);
+
+        Bus::shouldReceive('dispatchNow')
+            ->andThrow($exception);
+
+        $response = $this->deleteJson(
+            '/api/orders/' . $orderId->toString() . '/lineitems',
+            [
+                'lineItemId' => $lineItemId->toString(),
+            ]
+        );
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJsonPath('message', $exception->getMessage());
     }
 }
