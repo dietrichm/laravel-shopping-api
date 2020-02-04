@@ -13,6 +13,7 @@ use Domain\Products\ProductId;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class AddLineItemController extends Controller
 {
@@ -42,9 +43,7 @@ final class AddLineItemController extends Controller
                 $productId
             );
         } catch (OrderDoesNotExist | ProductDoesNotExist $exception) {
-            return response()
-                ->json([$exception->getMessage()])
-                ->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+            throw new BadRequestHttpException($exception->getMessage());
         }
 
         return LineItemIdResource::make($lineItemId)
