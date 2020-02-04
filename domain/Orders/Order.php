@@ -66,6 +66,11 @@ final class Order extends AggregateRoot
         return $this->lineItems->values()->all();
     }
 
+    public function hasLineItem(LineItemId $lineItemId): bool
+    {
+        return $this->lineItems->has($lineItemId->toString());
+    }
+
     protected function applyOrderWasCreated(): void
     {
         $this->new = false;

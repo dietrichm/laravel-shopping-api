@@ -34,7 +34,13 @@ final class RemoveLineItemFromOrder
 
     public function handle()
     {
-        Order::id($this->orderId)
+        $order = Order::id($this->orderId);
+
+        if (!$order->hasLineItem($this->lineItemId)) {
+            throw LineItemDoesNotExist::withId($this->lineItemId);
+        }
+
+        $order
             ->recordThat(new LineItemWasRemovedFromOrder(
                 $this->lineItemId,
                 $this->orderId
