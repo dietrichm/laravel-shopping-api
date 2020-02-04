@@ -8,6 +8,7 @@ use Domain\Orders\OrderId;
 use Domain\Orders\RemoveLineItemFromOrder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 final class RemoveLineItemController extends Controller
 {
@@ -15,6 +16,13 @@ final class RemoveLineItemController extends Controller
         Request $request,
         string $orderIdString
     ): JsonResponse {
+        Validator::make(
+            $request->all(),
+            [
+                'lineItemId' => ['required', 'uuid'],
+            ]
+        )->validate();
+
         $lineItemId = LineItemId::fromString($request->input('lineItemId'));
         $orderId = OrderId::fromString($orderIdString);
 
