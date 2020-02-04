@@ -121,7 +121,7 @@ final class AddLineItemControllerTest extends TestCase
         );
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
-        $response->assertJson([$exception->getMessage()]);
+        $response->assertJsonPath('message', $exception->getMessage());
     }
 
     /**
@@ -144,6 +144,6 @@ final class AddLineItemControllerTest extends TestCase
         );
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
-        $response->assertJson([$exception->getMessage()]);
+        $response->assertJsonPath('message', $exception->getMessage());
     }
 }
