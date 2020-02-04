@@ -45,3 +45,15 @@ Once an order has been created, a line item can be added using this endpoint. Re
 ```
 
 Replace `productId` with a valid product ID retrieved from `/api/products`. The created line item ID will be returned.
+
+### `DELETE /api/orders/[order-uuid]/lineitems`
+
+An existing line item can be deleted again from an order by issuing the following request using `DELETE`:
+
+```json
+{
+    "lineItemId": "b882af8e-102a-44b0-bd8f-4388a6d6721c"
+}
+```
+
+Replace `lineItemId` with a valid line item ID.
