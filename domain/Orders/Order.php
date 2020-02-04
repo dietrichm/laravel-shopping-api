@@ -2,6 +2,7 @@
 
 namespace Domain\Orders;
 
+use Illuminate\Support\Collection;
 use Spatie\EventSourcing\AggregateRoot;
 
 final class Order extends AggregateRoot
@@ -17,9 +18,14 @@ final class Order extends AggregateRoot
     private $new = true;
 
     /**
-     * @var LineItem[]
+     * @var Collection
      */
-    private $lineItems = [];
+    private $lineItems;
+
+    public function __construct()
+    {
+        $this->lineItems = new Collection();
+    }
 
     public static function findOrCreate(OrderId $orderId): self
     {
@@ -57,7 +63,7 @@ final class Order extends AggregateRoot
      */
     public function getLineItems(): array
     {
-        return $this->lineItems;
+        return $this->lineItems->values()->all();
     }
 
     protected function applyOrderWasCreated(): void
@@ -73,6 +79,9 @@ final class Order extends AggregateRoot
             $event->getProductId()
         );
 
-        $this->lineItems[] = $lineItem;
+        $this->lineItems->offsetSet(
+            $lineItem->getId()->toString(),
+            $lineItem
+        );
     }
 }
