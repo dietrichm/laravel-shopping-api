@@ -4,6 +4,7 @@ namespace Domain\Products;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * @method static Product id(ProductId $productId)
@@ -42,11 +43,11 @@ final class Product extends Model
 
     public function scopeId(Builder $query, ProductId $productId): self
     {
-        $product = $query
-            ->where('uuid', $productId->toString())
-            ->first();
-
-        if (!$product instanceof self) {
+        try {
+            $product = $query
+                ->where('uuid', $productId->toString())
+                ->firstOrFail();
+        } catch (ModelNotFoundException $exception) {
             throw ProductDoesNotExist::withId($productId);
         }
 
