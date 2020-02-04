@@ -4,6 +4,7 @@ namespace Tests\Feature\Domain\Orders;
 
 use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\CreateOrder;
+use Domain\Orders\LineItem;
 use Domain\Orders\LineItemDoesNotExist;
 use Domain\Orders\LineItemId;
 use Domain\Orders\Order;
@@ -22,30 +23,45 @@ final class RemoveLineItemFromOrderTest extends TestCase
     /**
      * @test
      */
-    public function itRemovesLineItemFromOrder(): void
+    public function itRemovesSpecifiedLineItemFromOrder(): void
     {
         /** @var Product $product */
         $product = factory(Product::class)->create();
 
-        $lineItemId = LineItemId::generate();
+        $lineItemIdOne = LineItemId::generate();
+        $lineItemIdTwo = LineItemId::generate();
         $orderId = OrderId::generate();
         $productId = $product->getId();
 
         $this->givenOrderExists($orderId);
+
         $this->givenOrderHasLineItem(
-            $lineItemId,
+            $lineItemIdOne,
+            $orderId,
+            $productId
+        );
+        $this->givenOrderHasLineItem(
+            $lineItemIdTwo,
             $orderId,
             $productId
         );
 
         (new RemoveLineItemFromOrder(
-            $lineItemId,
+            $lineItemIdOne,
             $orderId
         ))->handle();
 
         $order = Order::id($orderId);
 
-        $this->assertEmpty($order->getLineItems());
+        $expectedLineItem = new LineItem(
+            $lineItemIdTwo,
+            $productId
+        );
+
+        $this->assertEquals(
+            [$expectedLineItem],
+            $order->getLineItems()
+        );
     }
 
     /**
