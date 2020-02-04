@@ -33,4 +33,12 @@ final class LineItemCollection
     {
         return $this->collection->has($lineItemId->toString());
     }
+
+    /**
+     * @return LineItem[]
+     */
+    public function all(): array
+    {
+        return $this->collection->values()->all();
+    }
 }
