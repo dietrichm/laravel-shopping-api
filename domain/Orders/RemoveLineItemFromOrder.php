@@ -2,8 +2,12 @@
 
 namespace Domain\Orders;
 
+use Illuminate\Foundation\Bus\Dispatchable;
+
 final class RemoveLineItemFromOrder
 {
+    use Dispatchable;
+
     /**
      * @var LineItemId
      */
