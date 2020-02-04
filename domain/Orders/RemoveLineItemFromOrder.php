@@ -31,4 +31,14 @@ final class RemoveLineItemFromOrder
     {
         return $this->orderId;
     }
+
+    public function handle()
+    {
+        Order::id($this->orderId)
+            ->recordThat(new LineItemWasRemovedFromOrder(
+                $this->lineItemId,
+                $this->orderId
+            ))
+            ->persist();
+    }
 }
