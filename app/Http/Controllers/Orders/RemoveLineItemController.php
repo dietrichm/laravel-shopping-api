@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Orders;
 
 use App\Http\Controllers\Controller;
 use Domain\Orders\LineItemId;
+use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Orders\RemoveLineItemFromOrder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class RemoveLineItemController extends Controller
 {
@@ -30,10 +32,14 @@ final class RemoveLineItemController extends Controller
         $lineItemId = LineItemId::fromString($request->input('lineItemId'));
         $orderId = OrderId::fromString($orderIdString);
 
-        RemoveLineItemFromOrder::dispatchNow(
-            $lineItemId,
-            $orderId
-        );
+        try {
+            RemoveLineItemFromOrder::dispatchNow(
+                $lineItemId,
+                $orderId
+            );
+        } catch (OrderDoesNotExist $exception) {
+            throw new BadRequestHttpException($exception->getMessage());
+        }
 
         return response()->json();
     }
