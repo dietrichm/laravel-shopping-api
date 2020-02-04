@@ -24,6 +24,11 @@ final class LineItemCollection
         );
     }
 
+    public function remove(LineItemId $lineItemId): void
+    {
+        $this->collection->offsetUnset($lineItemId->toString());
+    }
+
     public function has(LineItemId $lineItemId): bool
     {
         return $this->collection->has($lineItemId->toString());
