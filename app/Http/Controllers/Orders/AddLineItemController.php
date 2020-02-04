@@ -20,7 +20,7 @@ final class AddLineItemController extends Controller
         Request $request,
         string $orderIdString
     ): JsonResponse {
-        $validator = Validator::make(
+        Validator::make(
             array_merge(
                 ['orderId' => $orderIdString],
                 $request->all()
@@ -29,13 +29,7 @@ final class AddLineItemController extends Controller
                 'orderId' => ['required', 'uuid'],
                 'productId' => ['required', 'uuid'],
             ]
-        );
-
-        if ($validator->fails()) {
-            return response()
-                ->json($validator->errors())
-                ->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
-        }
+        )->validate();
 
         $lineItemId = LineItemId::generate();
         $orderId = OrderId::fromString($orderIdString);
