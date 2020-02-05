@@ -2,6 +2,7 @@
 
 namespace Domain\Orders;
 
+use App\ValueObjects\Money;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
@@ -49,5 +50,14 @@ final class LineItemCollection
     public function all(): array
     {
         return $this->collection->values()->all();
+    }
+
+    public function getTotalPrice(): Money
+    {
+        $sum = $this->collection->sum(function (LineItem $lineItem) {
+            return $lineItem->getTotalPrice()->getValue();
+        });
+
+        return Money::fromValue($sum);
     }
 }

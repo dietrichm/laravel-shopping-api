@@ -2,6 +2,7 @@
 
 namespace Domain\Orders;
 
+use App\ValueObjects\Money;
 use Domain\Products\Product;
 
 final class LineItem
@@ -30,5 +31,10 @@ final class LineItem
     public function getProduct(): Product
     {
         return $this->product;
+    }
+
+    public function getTotalPrice(): Money
+    {
+        return $this->getProduct()->getPrice();
     }
 }
