@@ -2,6 +2,7 @@
 
 namespace Domain\Orders;
 
+use App\ValueObjects\Money;
 use Domain\Products\Product;
 use Spatie\EventSourcing\AggregateRoot;
 
@@ -75,6 +76,11 @@ final class Order extends AggregateRoot
     public function hasLineItem(LineItemId $lineItemId): bool
     {
         return $this->lineItems->has($lineItemId);
+    }
+
+    public function getTotalPrice(): Money
+    {
+        return $this->lineItems->getTotalPrice();
     }
 
     /**
