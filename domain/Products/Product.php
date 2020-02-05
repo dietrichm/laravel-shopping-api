@@ -2,6 +2,7 @@
 
 namespace Domain\Products;
 
+use App\ValueObjects\Money;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

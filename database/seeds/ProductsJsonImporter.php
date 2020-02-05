@@ -1,6 +1,6 @@
 <?php
 
-use Domain\Products\Money;
+use App\ValueObjects\Money;
 use Domain\Products\Product;
 use Domain\Products\ProductId;
 use Domain\Products\ProductName;

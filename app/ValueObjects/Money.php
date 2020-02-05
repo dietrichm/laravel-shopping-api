@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Products;
+namespace App\ValueObjects;
 
 use RuntimeException;
 
