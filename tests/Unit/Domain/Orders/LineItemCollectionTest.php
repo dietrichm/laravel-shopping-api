@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domain\Orders;
 
+use App\ValueObjects\Money;
 use Domain\Orders\LineItem;
 use Domain\Orders\LineItemCollection;
 use Domain\Orders\LineItemId;
@@ -89,6 +90,30 @@ final class LineItemCollectionTest extends TestCase
                 $lineItemTwo,
             ],
             $this->collection->all()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itCanCalculateTotalPrice(): void
+    {
+        $priceOne = Money::fromValue(12.54);
+        $priceTwo = Money::fromValue(892);
+
+        $lineItemOne = $this->givenThereIsALineItem([
+            'price' => $priceOne->getValue(),
+        ]);
+        $lineItemTwo = $this->givenThereIsALineItem([
+            'price' => $priceTwo->getValue(),
+        ]);
+
+        $this->collection->add($lineItemOne);
+        $this->collection->add($lineItemTwo);
+
+        $this->assertEquals(
+            Money::fromValue(904.54),
+            $this->collection->getTotalPrice()
         );
     }
 
