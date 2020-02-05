@@ -92,11 +92,12 @@ final class LineItemCollectionTest extends TestCase
         );
     }
 
-    private function givenThereIsALineItem(): LineItem
-    {
+    private function givenThereIsALineItem(
+        array $productProperties = []
+    ): LineItem {
         return new LineItem(
             LineItemId::generate(),
-            factory(Product::class)->make()
+            factory(Product::class)->make($productProperties)
         );
     }
 }
