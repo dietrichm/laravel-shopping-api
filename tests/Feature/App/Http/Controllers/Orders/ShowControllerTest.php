@@ -5,6 +5,7 @@ namespace Tests\Feature\App\Http\Controllers\Orders;
 use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\CreateOrder;
 use Domain\Orders\LineItemId;
+use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Orders\RemoveLineItemFromOrder;
 use Domain\Products\Product;
@@ -91,6 +92,22 @@ final class ShowControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonValidationErrors(['orderId']);
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsWhenOrderDoesNotExist(): void
+    {
+        $orderId = OrderId::generate();
+        $exception = OrderDoesNotExist::withId($orderId);
+
+        $response = $this->getJson(
+            '/api/orders/' . $orderId->toString()
+        );
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJsonPath('message', $exception->getMessage());
     }
 
     private function givenOrderExists(OrderId $orderId): void
