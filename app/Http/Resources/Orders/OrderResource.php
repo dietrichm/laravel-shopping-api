@@ -26,7 +26,10 @@ final class OrderResource extends JsonResource
                 $order->getLineItems(),
                 $request
             ),
-            'removedLineItems' => [],
+            'removedLineItems' => $this->transformLineItems(
+                $order->getRemovedLineItems(),
+                $request
+            ),
         ];
     }
 
