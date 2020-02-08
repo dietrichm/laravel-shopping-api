@@ -10,6 +10,7 @@ use Domain\Orders\RemoveLineItemFromOrder;
 use Domain\Products\Product;
 use Domain\Products\ProductId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 
 final class ShowControllerTest extends TestCase
@@ -79,6 +80,17 @@ final class ShowControllerTest extends TestCase
                 ],
             ],
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function itValidatesProvidedOrderId(): void
+    {
+        $response = $this->getJson('/api/orders/foo');
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonValidationErrors(['orderId']);
     }
 
     private function givenOrderExists(OrderId $orderId): void
