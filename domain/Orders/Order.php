@@ -9,7 +9,7 @@ use Spatie\EventSourcing\AggregateRoot;
 final class Order extends AggregateRoot
 {
     /**
-     * @var OrderId
+     * @var OrderId|null
      */
     private $orderId;
 
@@ -36,12 +36,7 @@ final class Order extends AggregateRoot
 
     public static function findOrCreate(OrderId $orderId): self
     {
-        /** @var Order $order */
-        $order = parent::retrieve($orderId->toString());
-
-        $order->orderId = $orderId;
-
-        return $order;
+        return parent::retrieve($orderId->toString());
     }
 
     public static function id(OrderId $orderId): self
@@ -55,7 +50,7 @@ final class Order extends AggregateRoot
         return $order;
     }
 
-    public function getId(): OrderId
+    public function getId(): ?OrderId
     {
         return $this->orderId;
     }
@@ -91,8 +86,10 @@ final class Order extends AggregateRoot
         return $this->removedLineItems->all();
     }
 
-    protected function applyOrderWasCreated(): void
-    {
+    protected function applyOrderWasCreated(
+        OrderWasCreated $event
+    ): void {
+        $this->orderId = $event->getOrderId();
         $this->new = false;
     }
 
