@@ -14,11 +14,6 @@ final class Order extends AggregateRoot
     private $orderId;
 
     /**
-     * @var bool
-     */
-    private $new = true;
-
-    /**
      * @var LineItemCollection
      */
     private $lineItems;
@@ -57,7 +52,7 @@ final class Order extends AggregateRoot
 
     public function isNew(): bool
     {
-        return $this->new;
+        return $this->orderId === null;
     }
 
     /**
@@ -90,7 +85,6 @@ final class Order extends AggregateRoot
         OrderWasCreated $event
     ): void {
         $this->orderId = $event->getOrderId();
-        $this->new = false;
     }
 
     protected function applyLineItemWasAddedToOrder(
