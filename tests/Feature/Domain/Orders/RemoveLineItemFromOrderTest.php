@@ -60,7 +60,7 @@ final class RemoveLineItemFromOrderTest extends TestCase
 
         $this->assertEquals(
             [$expectedLineItem],
-            $order->getLineItems()
+            $order->getLineItems()->all()
         );
     }
 
@@ -98,7 +98,7 @@ final class RemoveLineItemFromOrderTest extends TestCase
 
         $this->assertEquals(
             [$expectedLineItem],
-            $order->getRemovedLineItems()
+            $order->getRemovedLineItems()->all()
         );
     }
 

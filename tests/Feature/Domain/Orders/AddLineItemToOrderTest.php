@@ -48,7 +48,7 @@ final class AddLineItemToOrderTest extends TestCase
 
         $this->assertEquals(
             [$expectedLineItem],
-            $order->getLineItems()
+            $order->getLineItems()->all()
         );
     }
 

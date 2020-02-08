@@ -55,12 +55,9 @@ final class Order extends AggregateRoot
         return $this->orderId === null;
     }
 
-    /**
-     * @return LineItem[]
-     */
-    public function getLineItems(): array
+    public function getLineItems(): LineItemCollection
     {
-        return $this->lineItems->all();
+        return $this->lineItems;
     }
 
     public function hasLineItem(LineItemId $lineItemId): bool
@@ -73,12 +70,9 @@ final class Order extends AggregateRoot
         return $this->lineItems->getTotalPrice();
     }
 
-    /**
-     * @return LineItem[]
-     */
-    public function getRemovedLineItems(): array
+    public function getRemovedLineItems(): LineItemCollection
     {
-        return $this->removedLineItems->all();
+        return $this->removedLineItems;
     }
 
     protected function applyOrderWasCreated(
