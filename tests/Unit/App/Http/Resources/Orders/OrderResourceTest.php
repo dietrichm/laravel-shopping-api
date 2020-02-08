@@ -84,6 +84,48 @@ final class OrderResourceTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function itIncludesRemovedLineItemsInArray(): void
+    {
+        $orderId = OrderId::generate();
+
+        /** @var Order $order */
+        $order = (new Order())
+            ->recordThat(new OrderWasCreated($orderId));
+
+        $lineItemOne = $this->givenThereIsALineItem();
+        $order->getRemovedLineItems()->add($lineItemOne);
+
+        $lineItemTwo = $this->givenThereIsALineItem();
+        $order->getRemovedLineItems()->add($lineItemTwo);
+
+        $resource = new OrderResource($order);
+        $request = new Request();
+
+        $this->assertEquals(
+            [
+                'id' => $orderId->toString(),
+                'totalPrice' => 0,
+                'lineItems' => [],
+                'removedLineItems' => [
+                    [
+                        'id' => $lineItemOne->getId()->toString(),
+                        'product' => (new ProductResource($lineItemOne->getProduct()))
+                            ->toArray($request),
+                    ],
+                    [
+                        'id' => $lineItemTwo->getId()->toString(),
+                        'product' => (new ProductResource($lineItemTwo->getProduct()))
+                            ->toArray($request),
+                    ],
+                ],
+            ],
+            $resource->toArray($request)
+        );
+    }
+
     private function givenThereIsALineItem(
         array $productProperties = []
     ): LineItem {
