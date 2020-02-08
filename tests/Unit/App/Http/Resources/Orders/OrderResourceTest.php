@@ -1,32 +1,25 @@
 <?php
 
-namespace Tests\Feature\App\Http\Resources\Orders;
+namespace Tests\Unit\App\Http\Resources\Orders;
 
 use App\Http\Resources\Orders\OrderResource;
 use Domain\Orders\Order;
 use Domain\Orders\OrderId;
 use Domain\Orders\OrderWasCreated;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class OrderResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
     public function itTransformsEmptyOrderIntoArray(): void
     {
         $orderId = OrderId::generate();
-        $order = null;
 
-        Order::fake([
-            new OrderWasCreated($orderId),
-        ])->when(function (Order $fakeOrder) use (&$order) {
-            $order = $fakeOrder;
-        });
+        $order = (new Order())
+            ->recordThat(new OrderWasCreated($orderId));
 
         $resource = new OrderResource($order);
 
