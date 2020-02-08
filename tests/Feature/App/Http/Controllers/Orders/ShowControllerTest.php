@@ -50,6 +50,35 @@ final class ShowControllerTest extends TestCase
             $orderId,
             $productIdTwo
         );
+
+        $response = $this->getJson(
+            '/api/orders/' . $orderId->toString()
+        );
+
+        $response->assertJsonPath('data', [
+            'id' => $orderId->toString(),
+            'totalPrice' => 128.2,
+            'lineItems' => [
+                [
+                    'id' => $lineItemIdOne->toString(),
+                    'product' => [
+                        'id' => $productIdOne->toString(),
+                        'name' => $productOne->getName()->toString(),
+                        'price' => 128.2,
+                    ],
+                ],
+            ],
+            'removedLineItems' => [
+                [
+                    'id' => $lineItemIdTwo->toString(),
+                    'product' => [
+                        'id' => $productIdTwo->toString(),
+                        'name' => $productTwo->getName()->toString(),
+                        'price' => 96,
+                    ],
+                ],
+            ],
+        ]);
     }
 
     private function givenOrderExists(OrderId $orderId): void
