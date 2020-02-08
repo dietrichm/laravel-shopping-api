@@ -20,5 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('products', 'Products\IndexController');
 Route::post('orders', 'Orders\CreateController');
+Route::get('orders/{order}', 'Orders\ShowController');
 Route::post('orders/{order}/lineitems', 'Orders\AddLineItemController');
 Route::delete('orders/{order}/lineitems', 'Orders\RemoveLineItemController');
