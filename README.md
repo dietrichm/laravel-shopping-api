@@ -34,6 +34,12 @@ This will return a list of products, including the ID, name and price.
 
 To create a new order, call this endpoint to retrieve a new order ID.
 
+### `GET /api/orders/[order-uuid]`
+
+The info of any created order will be returned using this API endpoint. It shows the total value of the order along with all currently included line items with product info. Replace `[order-uuid]` with a valid order ID.
+
+Because the API also keeps track of which line items were removed, the list of returned line items with product data is included separately in the response.
+
 ### `POST /api/orders/[order-uuid]/lineitems`
 
 Once an order has been created, a line item can be added using this endpoint. Replace `[order-uuid]` in the path and use the following JSON payload:
