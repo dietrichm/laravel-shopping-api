@@ -23,6 +23,7 @@ final class CreateOrderTest extends TestCase
 
         $order = Order::findOrCreate($orderId);
 
+        $this->assertTrue($order->getId()->equals($orderId));
         $this->assertFalse($order->isNew());
     }
 }
