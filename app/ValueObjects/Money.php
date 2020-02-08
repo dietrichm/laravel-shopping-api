@@ -13,8 +13,8 @@ final class Money
 
     public function __construct(float $value)
     {
-        if ($value <= 0) {
-            return new RuntimeException('Money value must be positive');
+        if ($value < 0) {
+            return new RuntimeException('Money value must be zero or positive');
         }
 
         $this->value = $value;
