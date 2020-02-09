@@ -39,7 +39,13 @@ final class CheckoutOrder
 
     public function handle()
     {
-        Order::id($this->orderId)
+        $order = Order::id($this->orderId);
+
+        if ($order->isCheckedOut()) {
+            throw OrderIsAlreadyCheckedOut::withId($this->orderId);
+        }
+
+        $order
             ->recordThat(
                 new OrderWasCheckedOut(
                     $this->orderId,
