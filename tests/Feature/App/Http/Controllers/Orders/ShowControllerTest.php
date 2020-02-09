@@ -60,6 +60,7 @@ final class ShowControllerTest extends TestCase
         $response->assertJsonPath('data', [
             'id' => $orderId->toString(),
             'totalPrice' => 128.2,
+            'isCheckedOut' => false,
             'lineItems' => [
                 [
                     'id' => $lineItemIdOne->toString(),
