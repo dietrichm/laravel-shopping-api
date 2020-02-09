@@ -31,6 +31,7 @@ final class OrderResourceTest extends TestCase
             [
                 'id' => $orderId->toString(),
                 'totalPrice' => 0,
+                'isCheckedOut' => false,
                 'lineItems' => [],
                 'removedLineItems' => [],
             ],
@@ -66,6 +67,7 @@ final class OrderResourceTest extends TestCase
             [
                 'id' => $orderId->toString(),
                 'totalPrice' => 104.31,
+                'isCheckedOut' => false,
                 'lineItems' => [
                     [
                         'id' => $lineItemOne->getId()->toString(),
@@ -108,6 +110,7 @@ final class OrderResourceTest extends TestCase
             [
                 'id' => $orderId->toString(),
                 'totalPrice' => 0,
+                'isCheckedOut' => false,
                 'lineItems' => [],
                 'removedLineItems' => [
                     [

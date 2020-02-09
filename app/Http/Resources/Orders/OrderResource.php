@@ -22,6 +22,7 @@ final class OrderResource extends JsonResource
         return [
             'id' => $order->getId()->toString(),
             'totalPrice' => $order->getTotalPrice()->getValue(),
+            'isCheckedOut' => $order->isCheckedOut(),
             'lineItems' => $this->transformLineItems(
                 $order->getLineItems(),
                 $request
