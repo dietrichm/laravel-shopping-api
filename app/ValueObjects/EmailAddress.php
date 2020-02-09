@@ -29,4 +29,9 @@ final class EmailAddress
     {
         return $this->emailAddress;
     }
+
+    public function equals(self $other): bool
+    {
+        return $this->emailAddress === $other->emailAddress;
+    }
 }
