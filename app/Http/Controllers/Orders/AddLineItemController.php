@@ -8,6 +8,7 @@ use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\LineItemId;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderIsAlreadyCheckedOut;
 use Domain\Products\ProductDoesNotExist;
 use Domain\Products\ProductId;
 use Illuminate\Http\JsonResponse;
@@ -42,7 +43,9 @@ final class AddLineItemController extends Controller
                 $orderId,
                 $productId
             );
-        } catch (OrderDoesNotExist | ProductDoesNotExist $exception) {
+        } catch (OrderDoesNotExist
+            | OrderIsAlreadyCheckedOut
+            | ProductDoesNotExist $exception) {
             throw new BadRequestHttpException($exception->getMessage());
         }
 

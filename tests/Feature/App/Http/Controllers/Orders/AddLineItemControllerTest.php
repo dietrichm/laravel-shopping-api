@@ -6,6 +6,7 @@ use Domain\Orders\AddLineItemToOrder;
 use Domain\Orders\LineItemId;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderIsAlreadyCheckedOut;
 use Domain\Products\ProductDoesNotExist;
 use Domain\Products\ProductId;
 use Illuminate\Http\Response;
@@ -132,6 +133,29 @@ final class AddLineItemControllerTest extends TestCase
         $orderId = OrderId::generate();
         $productId = ProductId::generate();
         $exception = ProductDoesNotExist::withId($productId);
+
+        Bus::shouldReceive('dispatchNow')
+            ->andThrow($exception);
+
+        $response = $this->postJson(
+            '/api/orders/' . $orderId->toString() . '/lineitems',
+            [
+                'productId' => $productId->toString(),
+            ]
+        );
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJsonPath('message', $exception->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsWhenOrderIsCheckedOut(): void
+    {
+        $orderId = OrderId::generate();
+        $productId = ProductId::generate();
+        $exception = OrderIsAlreadyCheckedOut::withId($orderId);
 
         Bus::shouldReceive('dispatchNow')
             ->andThrow($exception);
