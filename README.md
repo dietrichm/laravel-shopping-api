@@ -63,3 +63,15 @@ An existing line item can be deleted again from an order by issuing the followin
 ```
 
 Replace `lineItemId` with a valid line item ID.
+
+### `POST /api/orders/[order-uuid]/checkout`
+
+Finally, an order can be checked out by sending an email address to the specified endpoint:
+
+```json
+{
+    "emailAddress": "me@example.org"
+}
+```
+
+As of now, the order is immutable and hence no line items can be added or removed.
