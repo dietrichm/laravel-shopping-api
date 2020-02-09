@@ -2,9 +2,10 @@
 
 namespace Domain\Orders;
 
+use App\Events\StoredEvent;
 use App\ValueObjects\EmailAddress;
 
-final class OrderWasCheckedOut
+final class OrderWasCheckedOut implements StoredEvent
 {
     /**
      * @var OrderId
@@ -32,5 +33,21 @@ final class OrderWasCheckedOut
     public function getEmailAddress(): EmailAddress
     {
         return $this->emailAddress;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'orderId' => $this->orderId->toString(),
+            'emailAddress' => $this->emailAddress->toString(),
+        ];
+    }
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            OrderId::fromString($data['orderId']),
+            EmailAddress::fromString($data['emailAddress']),
+        );
     }
 }
