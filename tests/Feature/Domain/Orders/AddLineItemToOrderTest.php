@@ -2,13 +2,16 @@
 
 namespace Tests\Feature\Domain\Orders;
 
+use App\ValueObjects\EmailAddress;
 use Domain\Orders\AddLineItemToOrder;
+use Domain\Orders\CheckoutOrder;
 use Domain\Orders\CreateOrder;
 use Domain\Orders\LineItem;
 use Domain\Orders\LineItemId;
 use Domain\Orders\Order;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderIsAlreadyCheckedOut;
 use Domain\Products\Product;
 use Domain\Products\ProductDoesNotExist;
 use Domain\Products\ProductId;
@@ -90,8 +93,37 @@ final class AddLineItemToOrderTest extends TestCase
         ))->handle();
     }
 
-    private function givenOrderExists(OrderId $orderId)
+    /**
+     * @test
+     */
+    public function itDoesNotAddLineItemToCheckedOutOrder(): void
+    {
+        $lineItemId = LineItemId::generate();
+        $orderId = OrderId::generate();
+        $productId = ProductId::generate();
+
+        $this->givenOrderExists($orderId);
+        $this->givenOrderIsCheckedOut($orderId);
+
+        $this->expectException(OrderIsAlreadyCheckedOut::class);
+
+        (new AddLineItemToOrder(
+            $lineItemId,
+            $orderId,
+            $productId
+        ))->handle();
+    }
+
+    private function givenOrderExists(OrderId $orderId): void
     {
         CreateOrder::dispatchNow($orderId);
+    }
+
+    private function givenOrderIsCheckedOut(OrderId $orderId): void
+    {
+        CheckoutOrder::dispatchNow(
+            $orderId,
+            EmailAddress::fromString('me@example.org')
+        );
     }
 }
