@@ -4,6 +4,7 @@ namespace Tests\Feature\App\Http\Controllers\Orders;
 
 use App\ValueObjects\EmailAddress;
 use Domain\Orders\CheckoutOrder;
+use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
@@ -94,5 +95,28 @@ final class CheckoutControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonValidationErrors(['orderId']);
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsWhenOrderDoesNotExist(): void
+    {
+        $orderId = OrderId::generate();
+        $emailAddress = EmailAddress::fromString('me@example.org');
+        $exception = OrderDoesNotExist::withId($orderId);
+
+        Bus::shouldReceive('dispatchNow')
+            ->andThrow($exception);
+
+        $response = $this->postJson(
+            '/api/orders/' . $orderId->toString() . '/checkout',
+            [
+                'emailAddress' => $emailAddress->toString(),
+            ]
+        );
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJsonPath('message', $exception->getMessage());
     }
 }
