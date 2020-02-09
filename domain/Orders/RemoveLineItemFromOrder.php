@@ -40,6 +40,10 @@ final class RemoveLineItemFromOrder
     {
         $order = Order::id($this->orderId);
 
+        if ($order->isCheckedOut()) {
+            throw OrderIsAlreadyCheckedOut::withId($this->orderId);
+        }
+
         if (!$order->hasLineItem($this->lineItemId)) {
             throw LineItemDoesNotExist::withId($this->lineItemId);
         }
