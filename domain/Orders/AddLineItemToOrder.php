@@ -53,6 +53,11 @@ final class AddLineItemToOrder
     public function handle()
     {
         $order = Order::id($this->orderId);
+
+        if ($order->isCheckedOut()) {
+            throw OrderIsAlreadyCheckedOut::withId($this->orderId);
+        }
+
         $product = Product::id($this->productId);
 
         $order
