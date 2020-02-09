@@ -8,6 +8,7 @@ use Domain\Orders\CheckoutOrder;
 use Domain\Orders\OrderId;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 final class CheckoutController extends Controller
 {
@@ -15,6 +16,13 @@ final class CheckoutController extends Controller
         Request $request,
         string $orderIdString
     ): JsonResponse {
+        Validator::make(
+            $request->all(),
+            [
+                'emailAddress' => ['required', 'email'],
+            ]
+        )->validate();
+
         $orderId = OrderId::fromString($orderIdString);
         $emailAddress = EmailAddress::fromString($request->input('emailAddress'));
 
