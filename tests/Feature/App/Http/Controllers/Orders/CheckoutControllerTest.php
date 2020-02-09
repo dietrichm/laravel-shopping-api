@@ -6,6 +6,7 @@ use App\ValueObjects\EmailAddress;
 use Domain\Orders\CheckoutOrder;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderIsAlreadyCheckedOut;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Bus;
@@ -105,6 +106,29 @@ final class CheckoutControllerTest extends TestCase
         $orderId = OrderId::generate();
         $emailAddress = EmailAddress::fromString('me@example.org');
         $exception = OrderDoesNotExist::withId($orderId);
+
+        Bus::shouldReceive('dispatchNow')
+            ->andThrow($exception);
+
+        $response = $this->postJson(
+            '/api/orders/' . $orderId->toString() . '/checkout',
+            [
+                'emailAddress' => $emailAddress->toString(),
+            ]
+        );
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJsonPath('message', $exception->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsWhenOrderIsCheckedOut(): void
+    {
+        $orderId = OrderId::generate();
+        $emailAddress = EmailAddress::fromString('me@example.org');
+        $exception = OrderIsAlreadyCheckedOut::withId($orderId);
 
         Bus::shouldReceive('dispatchNow')
             ->andThrow($exception);

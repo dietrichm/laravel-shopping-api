@@ -7,6 +7,7 @@ use App\ValueObjects\EmailAddress;
 use Domain\Orders\CheckoutOrder;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderIsAlreadyCheckedOut;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -37,7 +38,7 @@ final class CheckoutController extends Controller
                 $orderId,
                 $emailAddress
             );
-        } catch (OrderDoesNotExist $exception) {
+        } catch (OrderDoesNotExist | OrderIsAlreadyCheckedOut $exception) {
             throw new BadRequestHttpException($exception->getMessage());
         }
 
