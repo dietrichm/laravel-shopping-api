@@ -73,4 +73,26 @@ final class CheckoutControllerTest extends TestCase
             'Invalid EmailAddress' => ['foo'],
         ];
     }
+
+    /**
+     * @test
+     */
+    public function itValidatesProvidedOrderId(): void
+    {
+        $emailAddress = EmailAddress::fromString('me@example.org');
+
+        Bus::fake();
+
+        $response = $this->postJson(
+            '/api/orders/foo/checkout',
+            [
+                'emailAddress' => $emailAddress->toString(),
+            ]
+        );
+
+        Bus::assertNotDispatched(CheckoutOrder::class);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonValidationErrors(['orderId']);
+    }
 }
