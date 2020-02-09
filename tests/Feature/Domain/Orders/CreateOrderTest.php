@@ -25,5 +25,6 @@ final class CreateOrderTest extends TestCase
 
         $this->assertTrue($order->getId()->equals($orderId));
         $this->assertFalse($order->isNew());
+        $this->assertFalse($order->isCheckedOut());
     }
 }
