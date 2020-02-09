@@ -81,6 +81,16 @@ final class Order extends AggregateRoot
         return $this->removedLineItems;
     }
 
+    public function isCheckedOut(): bool
+    {
+        return $this->clientEmailAddress !== null;
+    }
+
+    public function getClientEmailAddress(): ?EmailAddress
+    {
+        return $this->clientEmailAddress;
+    }
+
     protected function applyOrderWasCreated(
         OrderWasCreated $event
     ): void {
