@@ -4,10 +4,12 @@ namespace Tests\Unit\App\Http\Resources\Orders;
 
 use App\Http\Resources\Orders\OrderResource;
 use App\Http\Resources\Products\ProductResource;
+use App\ValueObjects\EmailAddress;
 use Domain\Orders\LineItem;
 use Domain\Orders\LineItemId;
 use Domain\Orders\Order;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderWasCheckedOut;
 use Domain\Orders\OrderWasCreated;
 use Domain\Products\Product;
 use Illuminate\Http\Request;
@@ -126,6 +128,34 @@ final class OrderResourceTest extends TestCase
                 ],
             ],
             $resource->toArray($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itIncludesCheckedOutStatusWhenCheckedOut(): void
+    {
+        $orderId = OrderId::generate();
+
+        $order = (new Order())
+            ->recordThat(new OrderWasCreated($orderId))
+            ->recordThat(new OrderWasCheckedOut(
+                $orderId,
+                EmailAddress::fromString('me@example.net')
+            ));
+
+        $resource = new OrderResource($order);
+
+        $this->assertEquals(
+            [
+                'id' => $orderId->toString(),
+                'totalPrice' => 0,
+                'isCheckedOut' => true,
+                'lineItems' => [],
+                'removedLineItems' => [],
+            ],
+            $resource->toArray(new Request())
         );
     }
 
