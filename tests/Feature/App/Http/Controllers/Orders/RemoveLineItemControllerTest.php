@@ -6,6 +6,7 @@ use Domain\Orders\LineItemDoesNotExist;
 use Domain\Orders\LineItemId;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderIsAlreadyCheckedOut;
 use Domain\Orders\RemoveLineItemFromOrder;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Bus;
@@ -126,6 +127,29 @@ final class RemoveLineItemControllerTest extends TestCase
         $orderId = OrderId::generate();
         $lineItemId = LineItemId::generate();
         $exception = LineItemDoesNotExist::withId($lineItemId);
+
+        Bus::shouldReceive('dispatchNow')
+            ->andThrow($exception);
+
+        $response = $this->deleteJson(
+            '/api/orders/' . $orderId->toString() . '/lineitems',
+            [
+                'lineItemId' => $lineItemId->toString(),
+            ]
+        );
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJsonPath('message', $exception->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsWhenOrderIsCheckedOut(): void
+    {
+        $orderId = OrderId::generate();
+        $lineItemId = LineItemId::generate();
+        $exception = OrderIsAlreadyCheckedOut::withId($orderId);
 
         Bus::shouldReceive('dispatchNow')
             ->andThrow($exception);

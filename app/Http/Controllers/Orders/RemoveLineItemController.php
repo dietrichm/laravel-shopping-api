@@ -7,6 +7,7 @@ use Domain\Orders\LineItemDoesNotExist;
 use Domain\Orders\LineItemId;
 use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
+use Domain\Orders\OrderIsAlreadyCheckedOut;
 use Domain\Orders\RemoveLineItemFromOrder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,7 +39,9 @@ final class RemoveLineItemController extends Controller
                 $lineItemId,
                 $orderId
             );
-        } catch (OrderDoesNotExist | LineItemDoesNotExist $exception) {
+        } catch (OrderDoesNotExist
+            | OrderIsAlreadyCheckedOut
+            | LineItemDoesNotExist $exception) {
             throw new BadRequestHttpException($exception->getMessage());
         }
 
