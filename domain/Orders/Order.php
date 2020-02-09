@@ -2,6 +2,7 @@
 
 namespace Domain\Orders;
 
+use App\ValueObjects\EmailAddress;
 use App\ValueObjects\Money;
 use Domain\Products\Product;
 use Spatie\EventSourcing\AggregateRoot;
@@ -22,6 +23,11 @@ final class Order extends AggregateRoot
      * @var LineItemCollection
      */
     private $removedLineItems;
+
+    /**
+     * @var EmailAddress|null
+     */
+    private $clientEmailAddress;
 
     public function __construct()
     {
@@ -99,5 +105,11 @@ final class Order extends AggregateRoot
     ): void {
         $lineItem = $this->lineItems->remove($event->getLineItemId());
         $this->removedLineItems->add($lineItem);
+    }
+
+    protected function applyOrderWasCheckedOut(
+        OrderWasCheckedOut $event
+    ): void {
+        $this->clientEmailAddress = $event->getEmailAddress();
     }
 }
