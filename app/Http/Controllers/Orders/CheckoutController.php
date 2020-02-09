@@ -17,8 +17,12 @@ final class CheckoutController extends Controller
         string $orderIdString
     ): JsonResponse {
         Validator::make(
-            $request->all(),
+            array_merge(
+                ['orderId' => $orderIdString],
+                $request->all()
+            ),
             [
+                'orderId' => ['required', 'uuid'],
                 'emailAddress' => ['required', 'email'],
             ]
         )->validate();
