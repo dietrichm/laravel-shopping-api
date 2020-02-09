@@ -3,9 +3,12 @@
 namespace Domain\Orders;
 
 use App\ValueObjects\EmailAddress;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 final class CheckoutOrder
 {
+    use Dispatchable;
+
     /**
      * @var OrderId
      */
@@ -32,5 +35,17 @@ final class CheckoutOrder
     public function getEmailAddress(): EmailAddress
     {
         return $this->emailAddress;
+    }
+
+    public function handle()
+    {
+        Order::id($this->orderId)
+            ->recordThat(
+                new OrderWasCheckedOut(
+                    $this->orderId,
+                    $this->emailAddress
+                )
+            )
+            ->persist();
     }
 }
