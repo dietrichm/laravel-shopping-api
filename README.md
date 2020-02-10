@@ -39,7 +39,7 @@ The test suite can be run with `make tests`.
 
 ## Working with the API
 
-There are several API endpoints available, which can easily be accessed using an API client such as [Postman](https://www.getpostman.com/) or [Insomnia](https://insomnia.rest/).
+There are several API endpoints available which can easily be accessed on `http://shopping.test` using an API client such as [Postman](https://www.getpostman.com/) or [Insomnia](https://insomnia.rest/).
 
 All of the following endpoints are designed to take and eventually return JSON data. Hence, use the following request headers for every call:
 
