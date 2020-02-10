@@ -7,7 +7,7 @@
 1. Run `make artisan key:generate` to generate and add the app key to `.env`.
 1. Restart the containers using `make restart`.  
    This will populate the changes in the environment variables.
-1. Create and seed the database tables using `make artisan -- migrate:fresh --seed`  
+1. Create and seed the database tables using `make artisan -- migrate:fresh --seed`.  
    This will import four demo products which have been provided in a JSON file.
 1. Add `0.0.0.0 shopping.test` to your `/etc/hosts` file.
 
@@ -38,7 +38,7 @@ To create a new order, call this endpoint to retrieve a new order ID.
 
 The info of any created order will be returned using this API endpoint. It shows the total value of the order along with all currently included line items with product info. Replace `[order-uuid]` with a valid order ID.
 
-Because the API also keeps track of which line items were removed, the list of returned line items with product data is included separately in the response.
+Because the API also keeps track of which line items were removed, the list of removed line items with product data is included separately in the response.
 
 ### `POST /api/orders/[order-uuid]/lineitems`
 
