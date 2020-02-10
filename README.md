@@ -14,6 +14,14 @@ The domain layer resides in `domain/` and contains domain objects for _Products_
 
 While the project strives to have a clean separation between domain and application logic, it still uses Laravel and its base functionality, including Eloquent models, so a pure split-up does not take place. For instance, the `Product` entity is an Eloquent model containing scalar properties as opposed to value objects, and exposes the query builder methods it uses in the domain and application layer. The `Order` entity, on the other hand, is an aggregate root and firmly tied to the implementation offered by the event sourcing package. So, at this point in time, no separate repositories were implemented.
 
+### Event sourcing
+
+We want to keep track of which items were added but also removed from the basket. Both adding as well as removing an item from an order are business commands in the domain layer, each having their proper event.
+
+The shopping platform makes use of event sourcing and persists all Order domain events in the `Order` aggregate root. Recording a new event updates the current state of the aggregate while loading an `Order` from the database replays all domain events that have happened on it, meticulously recreating the state of the `Order` as it was when it was persisted. In particular, removed line items are being collected on the `Order` separately, so they can still be returned from the API in a distinct array in the order JSON data.
+
+Using event sourcing, at every point in time the application knows _exactly_ how the current state was achieved, and can make future decisions based on past actions, such as applying discounts for removed line items.
+
 ## Installation
 
 1. Start the Docker containers by issuing `make`.  
