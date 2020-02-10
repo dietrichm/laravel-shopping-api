@@ -1,6 +1,20 @@
 # Laravel Shopping API
 
-## Running the application
+This project is a POC (or MVP) for the back-end of an online shopping platform. Based on Laravel 6, it implements a small API offering REST endpoints to retrieve product data and create, read, update and checkout orders.
+
+In order to use this project in a live environment, some further enhancements would need to happen, including implementing sessions. See _Future work_ for more details.
+
+## Technical approach
+
+The shopping back-end is built using PHP 7 on Laravel 6 and uses Domain-Driven Design as much as possible. Using DDD, the domain layer (containing all the business logic, commands and events) is kept separated as much as possible from the underlying application and infrastructural layers.
+
+### Domain-Driven Design (DDD)
+
+The domain layer resides in `domain/` and contains domain objects for _Products_ and _Orders_. It makes use extensively of value objects to represent properties of entities, implements commands and handlers for business scenarios, adds events that can take care of side effects and provides specific domain exceptions. The `Order` entity is an aggregate containing a collection of `LineItem` instances, each holding a reference to the `Product` being added.
+
+While the project strives to have a clean separation between domain and application logic, it still uses Laravel and its base functionality, including Eloquent models, so a pure split-up does not take place. For instance, the `Product` entity is an Eloquent model containing scalar properties as opposed to value objects, and exposes the query builder methods it uses in the domain and application layer. The `Order` entity, on the other hand, is an aggregate root and firmly tied to the implementation offered by the event sourcing package. So, at this point in time, no separate repositories were implemented.
+
+## Installation
 
 1. Start the Docker containers by issuing `make`.  
    This will also build the containers, create an `.env` file and install vendor packages.
