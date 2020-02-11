@@ -42,7 +42,7 @@ final class AddLineItemToOrderTest extends TestCase
             $productId
         ))->handle();
 
-        $order = Order::findOrCreate($orderId);
+        $order = Order::id($orderId);
 
         $expectedLineItem = new LineItem(
             $lineItemId,
