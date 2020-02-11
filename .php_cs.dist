@@ -15,5 +15,6 @@ return Config::create()
     ->setRules([
         '@PSR2' => true,
         'no_unused_imports' => true,
+        'ordered_imports' => true,
     ])
     ->setFinder($finder);
