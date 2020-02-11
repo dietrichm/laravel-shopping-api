@@ -19,6 +19,9 @@ return Config::create()
         ],
         'blank_line_before_statement' => true,
         'cast_spaces' => true,
+        'concat_space' => [
+            'spacing' => 'one',
+        ],
         'no_unused_imports' => true,
         'ordered_imports' => true,
     ])
