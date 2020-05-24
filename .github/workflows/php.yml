@@ -1,9 +1,9 @@
-name: PHP Linting
+name: PHP
 
 on: [push]
 
 jobs:
-  php-linting:
+  linting:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -11,3 +11,11 @@ jobs:
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
     - name: Lint PHP files using PHP-CS-Fixer
       run: vendor/bin/php-cs-fixer fix --verbose --dry-run --diff --using-cache=no
+  analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+    - name: Analyse PHP files using PHPStan
+      run: vendor/bin/phpstan analyse --no-progress
