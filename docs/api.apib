@@ -1,0 +1,134 @@
+FORMAT: 1A
+
+# Laravel Shopping API
+
+There are several API endpoints available which can easily be accessed on `http://shopping.test` using an API client such as [Postman](https://www.getpostman.com/) or [Insomnia](https://insomnia.rest/).
+
+All of the following endpoints are designed to take and eventually return JSON data. Hence, use the following request headers for every call:
+
+```
+Content-Type: application/json
+Accept: application/json
+```
+
+# Group Shopping
+
+## Products [/api/products]
+
+### List all products [GET]
+
+This will return a list of products, including the UUID, name and price.
+
++ Response 200 (application/json)
+
+        {
+            "data": [
+                {
+                    "id": "763c5df4-002f-452b-949d-5b945b2cb8ab",
+                    "name": "Product 1",
+                    "price": 271.99
+                },
+                {
+                    "id": "5e737314-bb72-46d6-b713-567556a75f2b",
+                    "name": "Product 2",
+                    "price": 47.93
+                }
+            ]
+        }
+
+## Orders [/api/orders]
+
+### Create order [POST]
+
+To create a new order, call this endpoint to retrieve a new order UUID.
+
++ Response 201 (application/json)
+
+        {
+            "data": {
+                "id": "ab691714-e243-45e3-ac32-b12626f020d1"
+            }
+        }
+
+### Get order [GET /api/orders/{uuid}]
+
+The info of any created order will be returned using this API endpoint. It shows the total value of the order along with all currently included line items with product info.
+
+Because the API also keeps track of which line items were removed, the list of removed line items with product data is included separately in the response.
+
++ Parameters
+    + uuid (string) - UUID of the order
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "id": "ab691714-e243-45e3-ac32-b12626f020d1",
+                "totalPrice": 0,
+                "isCheckedOut": true,
+                "lineItems": [],
+                "removedLineItems": [
+                    {
+                        "id": "8f712476-9d07-4642-89ef-2278972ae16d",
+                        "product": {
+                            "id": "763c5df4-002f-452b-949d-5b945b2cb8ab",
+                            "name": "Product 1",
+                            "price": 271.99
+                        }
+                    }
+                ]
+            }
+        }
+
+### Add line item [POST /api/orders/{uuid}/lineitems]
+
+Once an order has been created, a line item can be added using this endpoint.
+
++ Parameters
+    + uuid (string) - UUID of the order
+
++ Request (application/json)
+
+        {
+            "productId": "763c5df4-002f-452b-949d-5b945b2cb8ab"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "data": {
+                "id": "8f712476-9d07-4642-89ef-2278972ae16d"
+            }
+        }
+
+### Remove line item [DELETE /api/orders/{uuid}/lineitems]
+
+An existing line item can be deleted again from an order by issuing the following request.
+
++ Parameters
+    + uuid (string) - UUID of the order
+
++ Request (application/json)
+
+        {
+            "lineItemId": "8f712476-9d07-4642-89ef-2278972ae16d"
+        }
+
++ Response 200
+
+### Checkout order [POST /api/orders/{uuid}/checkout]
+
+Finally, an order can be checked out by sending an email address to the specified endpoint.
+
+As of now, the order is immutable and hence no line items can be added or removed.
+
++ Parameters
+    + uuid (string) - UUID of the order
+
++ Request (application/json)
+
+        {
+            "emailAddress": "me@example.org"
+        }
+
++ Response 200
