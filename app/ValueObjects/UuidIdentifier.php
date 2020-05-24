@@ -11,7 +11,7 @@ abstract class UuidIdentifier
      */
     private $uuid;
 
-    public function __construct(Uuid $uuid)
+    final public function __construct(Uuid $uuid)
     {
         $this->uuid = $uuid;
     }
