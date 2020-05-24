@@ -12,3 +12,26 @@ Accept: application/json
 ```
 
 # Group Shopping
+
+## Products [/api/products]
+
+### List all products [GET]
+
+This will return a list of products, including the UUID, name and price.
+
++ Response 200 (application/json)
+
+        {
+            "data": [
+                {
+                    "id": "763c5df4-002f-452b-949d-5b945b2cb8ab",
+                    "name": "Product 1",
+                    "price": 271.99
+                },
+                {
+                    "id": "5e737314-bb72-46d6-b713-567556a75f2b",
+                    "name": "Product 2",
+                    "price": 47.93
+                }
+            ]
+        }
