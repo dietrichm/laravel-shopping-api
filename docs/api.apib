@@ -79,3 +79,24 @@ Because the API also keeps track of which line items were removed, the list of r
                 ]
             }
         }
+
+### Add line item [POST /api/orders/{uuid}/lineitems]
+
+Once an order has been created, a line item can be added using this endpoint.
+
++ Parameters
+    + uuid (string) - UUID of the order
+
++ Request (application/json)
+
+        {
+            "productId": "763c5df4-002f-452b-949d-5b945b2cb8ab"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "data": {
+                "id": "8f712476-9d07-4642-89ef-2278972ae16d"
+            }
+        }
