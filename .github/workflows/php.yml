@@ -3,7 +3,7 @@ name: PHP
 on: [push]
 
 jobs:
-  php-linting:
+  linting:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
