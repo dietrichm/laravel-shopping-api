@@ -49,3 +49,33 @@ To create a new order, call this endpoint to retrieve a new order UUID.
                 "id": "ab691714-e243-45e3-ac32-b12626f020d1"
             }
         }
+
+### Get order [GET /api/orders/{uuid}]
+
+The info of any created order will be returned using this API endpoint. It shows the total value of the order along with all currently included line items with product info.
+
+Because the API also keeps track of which line items were removed, the list of removed line items with product data is included separately in the response.
+
++ Parameters
+    + uuid (string) - UUID of the order
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "id": "ab691714-e243-45e3-ac32-b12626f020d1",
+                "totalPrice": 0,
+                "isCheckedOut": true,
+                "lineItems": [],
+                "removedLineItems": [
+                    {
+                        "id": "8f712476-9d07-4642-89ef-2278972ae16d",
+                        "product": {
+                            "id": "763c5df4-002f-452b-949d-5b945b2cb8ab",
+                            "name": "Product 1",
+                            "price": 271.99
+                        }
+                    }
+                ]
+            }
+        }
