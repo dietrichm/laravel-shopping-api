@@ -115,3 +115,20 @@ An existing line item can be deleted again from an order by issuing the followin
         }
 
 + Response 200
+
+### Checkout order [POST /api/orders/{uuid}/checkout]
+
+Finally, an order can be checked out by sending an email address to the specified endpoint.
+
+As of now, the order is immutable and hence no line items can be added or removed.
+
++ Parameters
+    + uuid (string) - UUID of the order
+
++ Request (application/json)
+
+        {
+            "emailAddress": "me@example.org"
+        }
+
++ Response 200
