@@ -100,3 +100,18 @@ Once an order has been created, a line item can be added using this endpoint.
                 "id": "8f712476-9d07-4642-89ef-2278972ae16d"
             }
         }
+
+### Remove line item [DELETE /api/orders/{uuid}/lineitems]
+
+An existing line item can be deleted again from an order by issuing the following request.
+
++ Parameters
+    + uuid (string) - UUID of the order
+
++ Request (application/json)
+
+        {
+            "lineItemId": "8f712476-9d07-4642-89ef-2278972ae16d"
+        }
+
++ Response 200
