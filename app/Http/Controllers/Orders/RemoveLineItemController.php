@@ -9,8 +9,8 @@ use Domain\Orders\OrderDoesNotExist;
 use Domain\Orders\OrderId;
 use Domain\Orders\OrderIsAlreadyCheckedOut;
 use Domain\Orders\RemoveLineItemFromOrder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -19,7 +19,7 @@ final class RemoveLineItemController extends Controller
     public function __invoke(
         Request $request,
         string $orderIdString
-    ): JsonResponse {
+    ): Response {
         Validator::make(
             array_merge(
                 ['orderId' => $orderIdString],
@@ -45,6 +45,6 @@ final class RemoveLineItemController extends Controller
             throw new BadRequestHttpException($exception->getMessage());
         }
 
-        return response()->json();
+        return response()->noContent();
     }
 }
