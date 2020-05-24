@@ -39,7 +39,7 @@ final class RemoveLineItemControllerTest extends TestCase
             }
         );
 
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
     }
 
     /**
