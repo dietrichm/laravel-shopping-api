@@ -2,9 +2,9 @@
 
 ![PHP](https://github.com/dietrichm/laravel-shopping-api/workflows/PHP/badge.svg) ![Laravel](https://github.com/dietrichm/laravel-shopping-api/workflows/Laravel/badge.svg)
 
-This project is a POC (or MVP) for the back-end of an online shopping platform. Based on Laravel 6, it implements a small API offering REST endpoints to retrieve product data and create, read, update and checkout orders.
+This project is a POC for the back-end of an online shopping platform. Based on Laravel 6, it implements a small API offering REST endpoints to retrieve product data and create, read, update and checkout orders.
 
-In order to use this project in a live environment, some further enhancements would need to happen, including implementing sessions. See _Future work_ for more details.
+**Note:** lacking some essential auxiliary functionality such as sessions, this project is not suitable for use in a production environment.
 
 ## Technical approach
 
