@@ -6,6 +6,18 @@ This project is a POC for the back-end of an online shopping platform. Based on 
 
 **Note:** lacking some essential auxiliary functionality such as sessions, this project is not suitable for use in a production environment.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Technical approach](#technical-approach)
+  - [Domain-Driven Design (DDD)](#domain-driven-design-ddd)
+  - [Event sourcing](#event-sourcing)
+- [Installation](#installation)
+- [Running tests](#running-tests)
+- [Working with the API](#working-with-the-api)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Technical approach
 
 The shopping back-end is built using PHP 7 on Laravel 6 and uses Domain-Driven Design as much as possible. Using DDD, the domain layer (containing all the business logic, commands and events) is kept separated as much as possible from the underlying application and infrastructural layers.
