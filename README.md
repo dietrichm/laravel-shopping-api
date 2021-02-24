@@ -60,4 +60,4 @@ Refer to the [API documentation](docs/api.apib) in an [API Blueprint](https://ap
 
 Copyright 2020, Dietrich Moerman.
 
-Released under terms of the [GNU Affero General Public License v3.0](LICENSE).
+Released under the terms of the [GNU Affero General Public License v3.0](LICENSE).
