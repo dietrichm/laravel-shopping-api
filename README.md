@@ -15,6 +15,7 @@ This project is a POC for the back-end of an online shopping platform. Based on 
 - [Installation](#installation)
 - [Running tests](#running-tests)
 - [Working with the API](#working-with-the-api)
+- [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -54,3 +55,9 @@ The test suite can be run with `make tests`.
 ## Working with the API
 
 Refer to the [API documentation](docs/api.apib) in an [API Blueprint](https://apiblueprint.org/) file.
+
+## License
+
+Copyright 2020, Dietrich Moerman.
+
+Released under terms of the [GNU Affero General Public License v3.0](LICENSE).
