@@ -1,12 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
-    "license": "MIT",
+    "name": "dietrichm/laravel-shopping-api",
+    "description": "Laravel 6 based POC for a shopping cart API using DDD and event sourcing.",
+    "license": "AGPL-3.0-or-later",
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
