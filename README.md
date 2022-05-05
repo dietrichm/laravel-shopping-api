@@ -12,6 +12,7 @@ This project is a POC for the back-end of an online shopping platform. Based on 
 - [Technical approach](#technical-approach)
   - [Domain-Driven Design (DDD)](#domain-driven-design-ddd)
   - [Event sourcing](#event-sourcing)
+  - [Additional notes and thoughts (05/2022)](#additional-notes-and-thoughts-052022)
 - [Installation](#installation)
 - [Running tests](#running-tests)
 - [Working with the API](#working-with-the-api)
@@ -21,7 +22,10 @@ This project is a POC for the back-end of an online shopping platform. Based on 
 
 ## Technical approach
 
-The shopping back-end is built using PHP 7 on Laravel 6 and uses Domain-Driven Design as much as possible. Using DDD, the domain layer (containing all the business logic, commands and events) is kept separated as much as possible from the application and infrastructural layers.
+The shopping back-end is built using PHP 7 on Laravel 6 and uses Domain-Driven Design inspired patterns and approaches.
+Taken from DDD, the domain layer (containing all the business logic, commands and events) is kept separated as much as possible from the application and infrastructural layers.
+
+[Please read some notes and thoughts I wrote in hindsights](#additional-notes-and-thoughts-052022).
 
 ### Domain-Driven Design (DDD)
 
@@ -36,6 +40,15 @@ We want to keep track of which items were added but also removed from the basket
 The shopping platform makes use of event sourcing and persists all Order domain events in the `Order` aggregate root. Recording a new event updates the current state of the aggregate while loading an `Order` from the database replays all domain events that have happened on it, meticulously recreating the state of the `Order` as it was when it was persisted. In particular, removed line items are being collected on the `Order` separately, so they can still be returned from the API in a distinct array in the order JSON data.
 
 Using event sourcing, at every point in time the application knows _exactly_ how the current state was achieved, and can make future decisions based on past actions, such as applying discounts for removed line items.
+
+### Additional notes and thoughts (05/2022)
+
+This project should **not** be considered to represent _the_ way to do DDD or event sourcing with Laravel.
+
+When I built this POC, I found this to be a possible way to move closer to DDD practices and patterns while still operating within the Laravel framework.
+Today, I would rather vouch to move even closer to actual DDD patterns, define stricter rules for communication between layers, and use Laravel only in the application layer and for some of the infrastructural parts.
+
+As always, your mileage may vary.
 
 ## Installation
 
