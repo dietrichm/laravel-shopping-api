@@ -25,7 +25,7 @@ This project is a POC for the back-end of an online shopping platform. Based on 
 The shopping back-end is built using PHP 7 on Laravel 6 and uses Domain-Driven Design inspired patterns and approaches.
 Taken from DDD, the domain layer (containing all the business logic, commands and events) is kept separated as much as possible from the application and infrastructural layers.
 
-[Please read some notes and thoughts I wrote in hindsights](#additional-notes-and-thoughts-052022).
+[Please read some notes and thoughts I wrote in hindsight](#additional-notes-and-thoughts-052022).
 
 ### Domain-Driven Design (DDD)
 
